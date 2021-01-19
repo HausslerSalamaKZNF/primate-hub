@@ -1,0 +1,15 @@
+track augustus_augCGP_Gibbon
+shortLabel AugustusCGP
+longLabel AugustusCGP
+description Comparative Augustus
+bigDataUrl augustus_cgp.bb
+type bigGenePred
+group cat_tracks
+priority 4
+itemRgb on
+searchIndex assignedGeneId,name,name2
+labelFields assignedGeneId,name,name2
+defaultLabelFields name
+labelSeperator " "
+
+

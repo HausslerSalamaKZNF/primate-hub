@@ -1,0 +1,47 @@
+track bams_Bonobo
+group expression
+compositeTrack on
+shortLabel IsoSeq BAMs
+longLabel IsoSeq BAMs
+dragAndDrop subTracks
+visibility hide
+type bam
+indelDoubleInsert on
+indelQueryInsert on
+showNames off
+bamColorMode gray
+bamGrayMode aliQual
+pairEndsByName on
+
+    track 0_bonobo0_merged_flnc.bam.sorted.bam_Bonobo
+    parent bams_Bonobo
+    bigDataUrl 0_bonobo0_merged_flnc.bam.sorted.bam
+    shortLabel bonobo0
+    longLabel bonobo0
+    type bam
+    priority 10
+
+    track 1_bonobo1_merged_flnc.bam.sorted.bam_Bonobo
+    parent bams_Bonobo
+    bigDataUrl 1_bonobo1_merged_flnc.bam.sorted.bam
+    shortLabel bonobo1
+    longLabel bonobo1
+    type bam
+    priority 10
+
+    track 2_bonobo2_merged_flnc.bam.sorted.bam_Bonobo
+    parent bams_Bonobo
+    bigDataUrl 2_bonobo2_merged_flnc.bam.sorted.bam
+    shortLabel bonobo2
+    longLabel bonobo2
+    type bam
+    priority 10
+
+    track 3_bonobo3_merged_flnc.bam.sorted.bam_Bonobo
+    parent bams_Bonobo
+    bigDataUrl 3_bonobo3_merged_flnc.bam.sorted.bam
+    shortLabel bonobo3
+    longLabel bonobo3
+    type bam
+    priority 10
+

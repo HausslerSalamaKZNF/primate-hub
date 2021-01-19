@@ -1,0 +1,20 @@
+track transmap_Chimp
+shortLabel transMap
+longLabel transMap
+bigDataUrl transmap.bb
+type bigPsl
+group cat_tracks
+itemRgb on
+priority 2
+visibility pack
+baseColorUseSequence lfExtra
+baseColorDefault genomicCodons
+baseColorUseCds given
+indelDoubleInsert on
+indelQueryInsert on
+showDiffBasesAllScales .
+showDiffBasesMaxZoom 10000.0
+#showCdsAllScales .
+#showCdsMaxZoom 10000.0
+searchIndex name
+

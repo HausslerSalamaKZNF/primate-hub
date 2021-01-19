@@ -1,0 +1,15 @@
+track Rhesus_external_reference_Rhesus
+shortLabel Rhesus.external_reference
+longLabel Rhesus.external_reference
+description Rhesus.external_reference
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility pack
+searchIndex name,name2,geneId,transcriptId
+bigDataUrl annotation.bb
+labelFields name,name2,geneId,transcriptId
+defaultLabelFields name
+labelSeperator " "
+

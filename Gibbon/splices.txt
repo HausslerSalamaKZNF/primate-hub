@@ -1,0 +1,12 @@
+track splices_Gibbon
+type bigBed 12
+group expression
+shortLabel RNA-seq splices
+longLabel RNA-seq Splice Junctions
+bigDataUrl splices.bb
+visibility hide
+color 45,125,204
+priority 12
+spectrum on
+minGrayLevel 4
+

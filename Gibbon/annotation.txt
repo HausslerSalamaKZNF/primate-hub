@@ -1,0 +1,15 @@
+track Gibbon_external_reference_Gibbon
+shortLabel Gibbon.external_reference
+longLabel Gibbon.external_reference
+description Gibbon.external_reference
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility pack
+searchIndex name,name2,geneId,transcriptId
+bigDataUrl annotation.bb
+labelFields name,name2,geneId,transcriptId
+defaultLabelFields name
+labelSeperator " "
+

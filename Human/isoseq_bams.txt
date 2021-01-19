@@ -1,0 +1,23 @@
+track bams_Human
+group expression
+compositeTrack on
+shortLabel IsoSeq BAMs
+longLabel IsoSeq BAMs
+dragAndDrop subTracks
+visibility hide
+type bam
+indelDoubleInsert on
+indelQueryInsert on
+showNames off
+bamColorMode gray
+bamGrayMode aliQual
+pairEndsByName on
+
+    track 0_human.isoseq_flnc.sorted.bam_Human
+    parent bams_Human
+    bigDataUrl 0_human.isoseq_flnc.sorted.bam
+    shortLabel human.isoseq
+    longLabel human.isoseq
+    type bam
+    priority 10
+

@@ -1,0 +1,15 @@
+track Filtered_transMap_Bonobo
+shortLabel Filtered transMap
+longLabel Filtered transMap
+description Filtered transMap
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility hide
+searchIndex name,name2,geneId,transcriptId
+bigDataUrl filtered_transmap.bb
+labelFields name,name2,geneId,transcriptId
+defaultLabelFields name
+labelSeperator " "
+

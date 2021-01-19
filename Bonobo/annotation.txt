@@ -1,0 +1,15 @@
+track Bonobo_external_reference_Bonobo
+shortLabel Bonobo.external_reference
+longLabel Bonobo.external_reference
+description Bonobo.external_reference
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility pack
+searchIndex name,name2,geneId,transcriptId
+bigDataUrl annotation.bb
+labelFields name,name2,geneId,transcriptId
+defaultLabelFields name
+labelSeperator " "
+

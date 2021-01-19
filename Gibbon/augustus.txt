@@ -1,0 +1,15 @@
+track augustus_Gibbon
+shortLabel AugustusTM(R)
+longLabel AugustusTM(R)
+description AugustusTM(R)
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility hide
+searchIndex name,name2,geneId,transcriptId
+bigDataUrl augustus.bb
+labelFields name,name2,geneId,transcriptId
+defaultLabelFields name
+labelSeperator " "
+

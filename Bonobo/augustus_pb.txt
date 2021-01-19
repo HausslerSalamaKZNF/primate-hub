@@ -1,0 +1,15 @@
+track augustus_augPB_Bonobo
+shortLabel AugustusPB
+longLabel AugustusPB
+description PacBio Augustus
+bigDataUrl augustus_pb.bb
+type bigGenePred
+group cat_tracks
+priority 4
+itemRgb on
+searchIndex assignedGeneId,name,name2
+labelFields assignedGeneId,name,name2
+defaultLabelFields name
+labelSeperator " "
+
+

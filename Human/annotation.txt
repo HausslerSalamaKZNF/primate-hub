@@ -1,0 +1,15 @@
+track gencode_v33_annotation_gff3_Human
+shortLabel gencode.v33.annotation.gff3
+longLabel gencode.v33.annotation.gff3
+description gencode.v33.annotation.gff3
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility pack
+searchIndex name,name2,geneId,transcriptId
+bigDataUrl annotation.bb
+labelFields name,name2,geneId,transcriptId
+defaultLabelFields name
+labelSeperator " "
+

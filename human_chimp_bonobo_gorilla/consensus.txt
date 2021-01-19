@@ -1,0 +1,15 @@
+track consensus_human_chimp_bonobo_gorilla
+shortLabel CAT Annotation
+longLabel CAT Annotation
+description CAT Annotation
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 1
+visibility pack
+searchIndex name,name2,txId,geneName,sourceGene,sourceTranscript,alignmentId
+bigDataUrl consensus.bb
+labelFields name,name2,txId,geneName,sourceGene,sourceTranscript,alignmentId
+defaultLabelFields name
+labelSeperator " "
+

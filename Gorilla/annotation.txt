@@ -1,0 +1,15 @@
+track Gorilla_external_reference_Gorilla
+shortLabel Gorilla.external_reference
+longLabel Gorilla.external_reference
+description Gorilla.external_reference
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility pack
+searchIndex name,name2,geneId,transcriptId
+bigDataUrl annotation.bb
+labelFields name,name2,geneId,transcriptId
+defaultLabelFields name
+labelSeperator " "
+

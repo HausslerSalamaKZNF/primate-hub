@@ -1,0 +1,9 @@
+track error_platyrrhini
+type bigBed 6
+group cat_tracks
+shortLabel Consensus indels
+longLabel Consensus indels
+bigDataUrl evaluation.bb
+visibility hide
+priority 5
+

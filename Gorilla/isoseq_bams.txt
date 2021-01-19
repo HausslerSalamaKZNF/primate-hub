@@ -1,0 +1,23 @@
+track bams_Gorilla
+group expression
+compositeTrack on
+shortLabel IsoSeq BAMs
+longLabel IsoSeq BAMs
+dragAndDrop subTracks
+visibility hide
+type bam
+indelDoubleInsert on
+indelQueryInsert on
+showNames off
+bamColorMode gray
+bamGrayMode aliQual
+pairEndsByName on
+
+    track 0_gorilla.isoseq_flnc.sorted.bam_Gorilla
+    parent bams_Gorilla
+    bigDataUrl 0_gorilla.isoseq_flnc.sorted.bam
+    shortLabel gorilla.isoseq
+    longLabel gorilla.isoseq
+    type bam
+    priority 10
+

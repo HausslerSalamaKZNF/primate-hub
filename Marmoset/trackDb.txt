@@ -1,0 +1,224 @@
+include isoseq_bams.txt
+include augustus.txt
+include splices.txt
+include filtered_transmap.txt
+include transmap.txt
+include consensus.txt
+include augustus_cgp.txt
+include evaluation.txt
+include augustus_pb.txt
+
+
+track hubCentral
+compositeTrack on
+shortLabel Cactus
+longLabel Cactus Alignment Tracks
+group cat_tracks
+subGroup1 view Track_Type Snake=Alignments
+subGroup2 orgs Organisms primate=primate platyrrhini=platyrrhini hylobatidae=hylobatidae Rhesus=Rhesus Owl_monkey=Owl_monkey Marmoset=Marmoset hominidae=hominidae Gibbon=Gibbon human_chimp_bonobo_gorilla=human_chimp_bonobo_gorilla Orangutan=Orangutan human_chimp_bonobo=human_chimp_bonobo Gorilla=Gorilla chimp_bonobo=chimp_bonobo Chimp=Chimp Bonobo=Bonobo Human=Human
+dragAndDrop subTracks
+dimensions dimensionX=view dimensionY=orgs
+noInherit on
+priority 0
+centerLabelsDense on
+visibility full
+type bigBed 3
+
+    track hubCentralAlignments
+    shortLabel Alignments
+    view Alignments
+    visibility full
+    subTrack hubCentral
+
+        track snakeprimate
+        longLabel primate
+        shortLabel primate
+        otherSpecies primate
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=primate
+
+        track snakeplatyrrhini
+        longLabel platyrrhini
+        shortLabel platyrrhini
+        otherSpecies platyrrhini
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=platyrrhini
+
+        track snakehylobatidae
+        longLabel hylobatidae
+        shortLabel hylobatidae
+        otherSpecies hylobatidae
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=hylobatidae
+
+        track snakeRhesus
+        longLabel Rhesus
+        shortLabel Rhesus
+        otherSpecies Rhesus
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Rhesus
+
+        track snakeOwl_monkey
+        longLabel Owl_monkey
+        shortLabel Owl_monkey
+        otherSpecies Owl_monkey
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Owl_monkey
+
+        track snakeMarmoset
+        longLabel Marmoset
+        shortLabel Marmoset
+        otherSpecies Marmoset
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Marmoset
+
+        track snakehominidae
+        longLabel hominidae
+        shortLabel hominidae
+        otherSpecies hominidae
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=hominidae
+
+        track snakeGibbon
+        longLabel Gibbon
+        shortLabel Gibbon
+        otherSpecies Gibbon
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Gibbon
+
+        track snakehuman_chimp_bonobo_gorilla
+        longLabel human_chimp_bonobo_gorilla
+        shortLabel human_chimp_bonobo_gorilla
+        otherSpecies human_chimp_bonobo_gorilla
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=human_chimp_bonobo_gorilla
+
+        track snakeOrangutan
+        longLabel Orangutan
+        shortLabel Orangutan
+        otherSpecies Orangutan
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Orangutan
+
+        track snakehuman_chimp_bonobo
+        longLabel human_chimp_bonobo
+        shortLabel human_chimp_bonobo
+        otherSpecies human_chimp_bonobo
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=human_chimp_bonobo
+
+        track snakeGorilla
+        longLabel Gorilla
+        shortLabel Gorilla
+        otherSpecies Gorilla
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Gorilla
+
+        track snakechimp_bonobo
+        longLabel chimp_bonobo
+        shortLabel chimp_bonobo
+        otherSpecies chimp_bonobo
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=chimp_bonobo
+
+        track snakeChimp
+        longLabel Chimp
+        shortLabel Chimp
+        otherSpecies Chimp
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Chimp
+
+        track snakeBonobo
+        longLabel Bonobo
+        shortLabel Bonobo
+        otherSpecies Bonobo
+        visibility hide
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Bonobo
+
+        track snakeHuman
+        longLabel Human
+        shortLabel Human
+        otherSpecies Human
+        visibility full
+        parent hubCentralAlignments off
+        priority 3
+        bigDataUrl ../primates_eichler-v2.hal
+        type halSnake
+        group snake
+        subGroups view=Snake orgs=Human
+
