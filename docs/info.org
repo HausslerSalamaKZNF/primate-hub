@@ -14,5 +14,3 @@
 | Mouse      | Mus musculus            | GRCm38                        |                 | RS   | mm10     |    0 |    0 |
 
 type: GB = GenBank, RS = RefSeq, UN = unsubmitted
-rseq = count of RNA-Seq BAMs
-iseq = count of ISO-Seq BAMs
