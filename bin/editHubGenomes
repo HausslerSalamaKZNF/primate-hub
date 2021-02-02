@@ -1,0 +1,19 @@
+#!/usr/bin/gawk -f
+# edit hub genomes.txt to add blat servers for each genome
+# must specifed the following on the command lines:
+#  -v blatHost=
+#  -v blatPort=
+#  -v blatHubRelDir=  directory that contains the hub, realtive to the gfServer root
+
+$1 == "genome" {
+    genome = $2
+}
+$0 == "" {
+    print "blat", blatHost, blatPort, "dynamic", blatHubRelDir "/" genome
+    print "transBlat", blatHost, blatPort, "dynamic", blatHubRelDir "/" genome
+    print "isPcr", blatHost, blatPort, "dynamic", blatHubRelDir "/" genome
+}
+{
+    print $0
+}
+

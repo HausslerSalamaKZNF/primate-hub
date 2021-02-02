@@ -1,0 +1,12 @@
+* Calling redo cat annotations version 2020-10-14, was in
+** build with gencode V33
+** dir: /public/home/jcarmstr/public_html/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub
+
+* generate blat indexes
+
+for tb in */*.2bit ; do
+   g=$(dirname $tb)
+   gfServer index -stepSize=5 $g/$g.untrans.gfidx $tb
+   gfServer index -trans $g/$g.trans.gfidx $tb
+done
+
