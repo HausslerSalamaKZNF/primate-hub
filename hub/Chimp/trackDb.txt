@@ -21,7 +21,7 @@ dimensions dimensionX=view dimensionY=orgs
 noInherit on
 priority 0
 centerLabelsDense on
-visibility full
+visibility hide
 type bigBed 3
 
     track hubCentralAlignments
