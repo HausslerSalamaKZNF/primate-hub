@@ -14,3 +14,7 @@
 | Mouse      | Mus musculus            | GRCm38                        |                 | RS   | mm10     |
 
 type: GB = GenBank, RS = RefSeq, UN = unsubmitted
+
+* Hub:
+http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
+
