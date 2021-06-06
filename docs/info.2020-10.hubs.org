@@ -1,3 +1,7 @@
+* Primate assembly alignments 2020-10 CAT run
+** primates_eichler-v2.hal
+** gencode_v33
+
 * Genome assemblies
 
 | HAL name   | scientific              | submitter name                | accession       | type | UCSC     |
@@ -16,5 +20,6 @@
 type: GB = GenBank, RS = RefSeq, UN = unsubmitted
 
 * Hub:
+~jcarmstr/public_html/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/
 http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
 

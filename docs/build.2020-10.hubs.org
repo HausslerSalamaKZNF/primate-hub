@@ -1,4 +1,4 @@
-* Calling redo cat annotations version 2020-10-14, was in
+* Calling redo cat annotations version 2020-10-14:
 ** build with gencode V33
 ** dir: /public/home/jcarmstr/public_html/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub
 ** URL: http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
@@ -10,3 +10,5 @@ for tb in */*.2bit ; do
    gfServer index -trans $g/$g.trans.gfidx $tb
 done
 
+
+* 
