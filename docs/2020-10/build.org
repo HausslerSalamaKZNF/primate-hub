@@ -11,4 +11,41 @@ for tb in */*.2bit ; do
 done
 
 
-* 
+* build track hub from assembly hub, renaming sequences to UCSC names
+** generate chromosome name mappings from assemblies used in the hub to genome browser
+(see http://genomewiki.ucsc.edu/index.php/Chromosome_name_conversion)
+
+# create genomes/genomes.lst with
+Chimp Bonobo Gorilla Orangutan Rhesus Marmoset
+# put 2bits in genomes.lst
+
+# genomes/genomeMap.lst:
+Bonobo	panPan3
+Chimp	panTro6
+Gorilla	gorGor6
+Marmoset	calJac4
+Orangutan	ponAbe3
+Rhesus	rheMac10
+
+
+# this runs parasol
+cd mkkeys
+mkdir $(cat ../genomes/genomes.lst )
+for g in $(cat ../genomes/genomes.lst) ; do (~/kent/src/hg/utils/automation/doIdKeys.pl -buildDir=$(pwd)/$g -twoBit=$(pwd)/../genomes/$g.2bit $g&) ; done
+
+# compare pairs of hubname browsername, need 3rd col
+    join -t $'\t' \
+        mkkeys/$1/$1.idKeys.txt \
+        /hive/data/genomes/$2/bed/idKeys/$2.idKeys.txt | tawk '{print $2,$3}'  >mappings/$1.mapping
+
+
+** rename sequences, then genomes
+for g in $(cat genomes/genomes.lst) ; do halRenameSequences primates_eichler-v2-ucsc.hal $g mappings/$g ; done
+halRenameGenomes primates_eichler-v2-ucsc.hal genomes/genomeMap.lst 
+
+** rename hub data files
+these hack makes modify BEDs and BAMs (in bu
+hubs/2020-10/build-tools/doBamRename.mk
+hubs/2020-10/build-tools/doBedRename.mk
+
+

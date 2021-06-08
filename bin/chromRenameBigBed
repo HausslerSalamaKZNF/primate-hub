@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# edit sequence names in a bigBed -type=bed12+ using chromToUcsc 
+
+set -beEu -o pipefail
+
+if [ $# != 4 ] ; then
+    echo "wrong # args: $0 inBb aliases chromSizes outBb" >/dev/stderr
+    exit 1
+fi
+
+inBb=$1 ; shift
+aliases=$1 ; shift
+chromSizes=$1 ; shift
+outBb=$1 ; shift
+
+tmpbed=${TMPDIR}/chromRename.$$.bed
+tmpas=${TMPDIR}/chromRename.$$.as
+bigBedInfo -as $inBb | awk '/^basesCovered:/{on=0} on{print} /^as:/{on=1}' > $tmpas
+
+# horrible stuff to get comma separated lists of extra index fields
+extraIdx=$(bigBedInfo -extraIndex $inBb | \
+               awk '/^    /{ex=ex $1 ","} END{print substr(ex,0,length(ex)-1)}')
+
+export LC_COLLATE=C
+bigBedToBed $inBb stdout | chromToUcsc -s -a $aliases | sort -k1,1 -k2,2n > $tmpbed
+
+tmpoutbb=${outBb}.$(hostname).$$.tmp
+bedToBigBed -tab -type=bed12+ -as=$tmpas -extraIndex=$extraIdx $tmpbed $chromSizes $tmpoutbb
+mv -f $tmpoutbb $outBb
+rm -f $tmpbed $tmpas

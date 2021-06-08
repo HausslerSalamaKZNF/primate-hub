@@ -1,6 +1,6 @@
-hub primate-2020-10
+hub primate-2020-10-tracks
 shortLabel Primate 2020-10
-longLabel  Primate 2020-10 assembly hub
+longLabel  Primate 2020-10 track hub
 genomesFile genomes.txt
 email markd@ucsc.edu
 

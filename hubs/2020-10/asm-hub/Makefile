@@ -28,8 +28,7 @@ srcs = $(wildcard *.html *.txt) $(foreach a,${assemblies},$(wildcard $a/*.txt $a
 all: hub
 
 hub: ${srcs:%=${hubDir}/%}
-	@echo "WARNING: hub check skipped for now due to non-compliant hub"
-	#hubCheck ${hubUrl}
+	hubCheck ${hubUrl}
 
 ${hubDir}/genomes.txt: genomes.txt
 	@mkdir -p $(dir $@)

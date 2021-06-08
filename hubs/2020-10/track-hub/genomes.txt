@@ -1,0 +1,21 @@
+genome Rhesus
+trackDb Rhesus/trackDb.txt
+
+genome Marmoset
+trackDb Marmoset/trackDb.txt
+
+genome Orangutan
+trackDb Orangutan/trackDb.txt
+
+genome Gorilla
+trackDb Gorilla/trackDb.txt
+
+genome Chimp
+trackDb Chimp/trackDb.txt
+
+genome Bonobo
+trackDb Bonobo/trackDb.txt
+
+genome Human
+trackDb Human/trackDb.txt
+

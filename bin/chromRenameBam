@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# edit sequence names in a BAM using chromToUcsc 
+
+set -beEu -o pipefail
+
+if [ $# != 3 ] ; then
+    echo "wrong # args: $0 inBam aliases outBam" >/dev/stderr
+    exit 1
+fi
+
+inBam=$1 ; shift
+aliases=$1 ; shift
+outBam=$1 ; shift
+
+outBai=${outBam}.bai
+outBamTmp=${outBam}.$$.tmp
+
+samtools view -h -O SAM $inBam | chromToUcsc -s -a $aliases | samtools sort -@ 10 | samtools view -O BAM > $outBamTmp
+
+samtools index $outBamTmp $outBai
+mv -f $outBamTmp $outBam
+
