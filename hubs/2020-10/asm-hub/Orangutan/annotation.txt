@@ -1,4 +1,5 @@
 track Orangutan_external_reference_Orangutan
+html empty.html
 shortLabel Orangutan.external_reference
 longLabel Orangutan.external_reference
 description Orangutan.external_reference

@@ -1,4 +1,5 @@
 track augustus_Gorilla
+html empty.html
 shortLabel AugustusTM(R)
 longLabel AugustusTM(R)
 description AugustusTM(R)

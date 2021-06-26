@@ -1,4 +1,5 @@
 track error_chimp_bonobo
+html empty.html
 type bigBed 6
 group cat_tracks
 shortLabel Consensus indels

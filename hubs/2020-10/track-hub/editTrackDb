@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+import re
+import argparse
+
+
+def parseArgs():
+    desc = """edit trackDb.txt file to deal with snake track names
+    """
+    parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument("inTrackDbTxt")
+    parser.add_argument("outTrackDbTxt")
+    return parser.parse_args()
+
+genomeMap = {
+    "Bonobo": "panPan3",
+    "Chimp": "panTro6",
+    "Gorilla": "gorGor6",
+    "Marmoset": "calJac4",
+    "Orangutan": "ponAbe3",
+    "Rhesus": "rheMac10",
+    "Gibbon": "GCF_006542625.1",
+}
+
+def raRead(trackDbTxt):
+    with open(trackDbTxt) as fh:
+        return re.split('\n\n+', fh.read())
+
+def isSnake(stz):
+    return re.search('track snake', stz)
+
+def getSpecies(stz):
+    return re.search('otherSpecies (.+)\n', stz).group(1)
+
+def replaceSpecies(stz, oldSpecies, newSpecies):
+    stz = stz.replace('otherSpecies ' + oldSpecies, 'otherSpecies ' + newSpecies)
+    stz = stz.replace('../primates_eichler-v2.hal', '../primates_eichler-v2-ucsc.hal')
+    return stz
+
+def writeStz(stz, fh):
+    fh.write(stz)
+    fh.write('\n\n')
+
+def processSnake(stz, fh):
+    species = getSpecies(stz)
+    if species in genomeMap:
+        writeStz(replaceSpecies(stz, species, genomeMap[species]), fh)
+
+def processStanza(stz, fh):
+    if isSnake(stz):
+        processSnake(stz, fh)
+    else:
+        writeStz(stz, fh)
+
+
+def editTrackDb(args):
+    stanzas = raRead(args.inTrackDbTxt)
+
+    with open(args.outTrackDbTxt, 'w') as fh:
+        for stz in stanzas:
+            processStanza(stz, fh)
+
+editTrackDb(parseArgs())

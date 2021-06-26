@@ -1,4 +1,5 @@
 track Rhesus_external_reference_Rhesus
+html empty.html
 shortLabel Rhesus.external_reference
 longLabel Rhesus.external_reference
 description Rhesus.external_reference

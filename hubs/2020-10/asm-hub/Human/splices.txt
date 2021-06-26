@@ -1,4 +1,5 @@
 track splices_Human
+html empty.html
 type bigBed 12
 group expression
 shortLabel RNA-seq splices

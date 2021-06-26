@@ -12,7 +12,8 @@ assemblies = \
     Gorilla \
     Chimp \
     Bonobo \
-    Human
+    Human \
+    Gibbon
 
 srcs = $(wildcard *.html *.txt)
 asmDir = ../asm-hub
@@ -23,9 +24,16 @@ all: hub
 hub: ${srcs:%=${hubDir}/%}  ${asmSrcs:%=${hubDir}/%}
 	hubCheck ${hubUrl}
 
+
+
 ${hubDir}/%: %
 	@mkdir -p $(dir $@)
 	cp -f $< $@
+
+${hubDir}/%/trackDb.txt: ${asmDir}/%/trackDb.txt
+	@mkdir -p $(dir $@)
+	./editTrackDb $< $@.tmp
+	mv -f $@.tmp $@
 
 ${hubDir}/%: ${asmDir}/%
 	@mkdir -p $(dir $@)

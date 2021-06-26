@@ -1,4 +1,5 @@
 track transmap_human_chimp_bonobo
+html empty.html
 shortLabel transMap
 longLabel transMap
 bigDataUrl transmap.bb

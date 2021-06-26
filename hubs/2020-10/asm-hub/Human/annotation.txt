@@ -1,4 +1,5 @@
 track gencode_v33_annotation_gff3_Human
+html empty.html
 shortLabel gencode.v33.annotation.gff3
 longLabel gencode.v33.annotation.gff3
 description gencode.v33.annotation.gff3

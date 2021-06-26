@@ -1,4 +1,5 @@
 track transmap_Rhesus
+html empty.html
 shortLabel transMap
 longLabel transMap
 bigDataUrl transmap.bb

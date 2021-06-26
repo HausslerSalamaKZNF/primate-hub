@@ -1,4 +1,5 @@
 track Filtered_transMap_human_chimp_bonobo_gorilla
+html empty.html
 shortLabel Filtered transMap
 longLabel Filtered transMap
 description Filtered transMap

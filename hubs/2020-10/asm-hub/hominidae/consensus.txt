@@ -1,4 +1,5 @@
 track consensus_hominidae
+html empty.html
 shortLabel CAT Annotation
 longLabel CAT Annotation
 description CAT Annotation

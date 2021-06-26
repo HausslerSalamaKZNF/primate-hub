@@ -1,4 +1,5 @@
 track augustus_augCGP_Owl_monkey
+html empty.html
 shortLabel AugustusCGP
 longLabel AugustusCGP
 description Comparative Augustus

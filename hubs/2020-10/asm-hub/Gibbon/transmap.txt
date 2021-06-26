@@ -1,4 +1,5 @@
 track transmap_Gibbon
+html empty.html
 shortLabel transMap
 longLabel transMap
 bigDataUrl transmap.bb

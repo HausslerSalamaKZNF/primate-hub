@@ -1,21 +1,48 @@
-genome Rhesus
+genome rheMac10
 trackDb Rhesus/trackDb.txt
+organism Rhesus
+description Rhesus
+scientificName Rhesus
 
-genome Marmoset
+genome calJac4
 trackDb Marmoset/trackDb.txt
+organism Marmoset
+description Marmoset
+scientificName Marmoset
 
-genome Orangutan
+genome GCF_006542625.1
+trackDb Gibbon/trackDb.txt
+organism Gibbon
+description Gibbon
+scientificName Gibbon
+
+genome ponAbe3
 trackDb Orangutan/trackDb.txt
+organism Orangutan
+description Orangutan
+scientificName Orangutan
 
-genome Gorilla
+genome gorGor6
 trackDb Gorilla/trackDb.txt
+organism Gorilla
+description Gorilla
+scientificName Gorilla
 
-genome Chimp
+genome panTro6
 trackDb Chimp/trackDb.txt
+organism Chimp
+description Chimp
+scientificName Chimp
 
-genome Bonobo
+genome panPan3
 trackDb Bonobo/trackDb.txt
+organism Bonobo
+description Bonobo
+scientificName Bonobo
 
-genome Human
+genome hg38
 trackDb Human/trackDb.txt
+organism Human
+description Human
+scientificName Human
 

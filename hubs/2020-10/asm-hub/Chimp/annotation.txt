@@ -1,4 +1,5 @@
 track Chimp_external_reference_Chimp
+html empty.html
 shortLabel Chimp.external_reference
 longLabel Chimp.external_reference
 description Chimp.external_reference

@@ -1,4 +1,5 @@
 track augustus_augPB_Bonobo
+html empty.html
 shortLabel AugustusPB
 longLabel AugustusPB
 description PacBio Augustus

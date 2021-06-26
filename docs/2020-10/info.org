@@ -11,7 +11,7 @@
 | Gibbon     | Nomascus leucogenys     | Asia_NLE_v1                   | GCF_006542625.1 | RS   | -        |
 | Gorilla    | Gorilla gorilla gorilla | Kamilah_GGO_v0                | GCF_008122165.1 | RS   | gorGor6  |
 | Human      | Homo sapiens            | GRCh38                        |                 | RS   | hg38     |
-| Marmoset   | Callithrix jacchus      | Callithrix_jacchus_cj1700_1.0 | GCA_009663435.1 | GB   | -        |
+| Marmoset   | Callithrix jacchus      | Callithrix_jacchus_cj1700_1.0 | GCA_009663435.1 | RS   | calJac4  |
 | Orangutan  | Pongo abelii            | Susie_PABv2                   | GCF_002880775.1 | RS   | ponAbe3  |
 | Rhesus     | Macaca mulatta          | Mmul_10                       | GCF_003339765.1 | RS   | rheMac10 |
 | Owl_monkey | Aotus ???               | owl_monkey_indel_corrected    |                 | UN   | -        |
@@ -20,6 +20,9 @@
 type: GB = GenBank, RS = RefSeq, UN = unsubmitted
 
 * Hub:
+** old hub location
 ~jcarmstr/public_html/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/
 http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
 
+** assembly hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/asm-hub/hub.txt
+** track hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/track-hub/hub.txt

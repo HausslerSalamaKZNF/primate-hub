@@ -1,4 +1,5 @@
 track augustus_Orangutan
+html empty.html
 shortLabel AugustusTM(R)
 longLabel AugustusTM(R)
 description AugustusTM(R)

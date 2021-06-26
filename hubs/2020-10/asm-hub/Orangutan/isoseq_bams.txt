@@ -1,4 +1,5 @@
 track bams_Orangutan
+html empty.html
 group expression
 compositeTrack on
 shortLabel IsoSeq BAMs

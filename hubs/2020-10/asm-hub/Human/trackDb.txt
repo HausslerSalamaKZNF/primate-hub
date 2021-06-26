@@ -5,6 +5,7 @@ include augustus_pb.txt
 
 
 track hubCentral
+html empty.html
 compositeTrack on
 shortLabel Cactus
 longLabel Cactus Alignment Tracks

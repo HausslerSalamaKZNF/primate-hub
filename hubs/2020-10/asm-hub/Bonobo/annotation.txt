@@ -1,4 +1,5 @@
 track Bonobo_external_reference_Bonobo
+html empty.html
 shortLabel Bonobo.external_reference
 longLabel Bonobo.external_reference
 description Bonobo.external_reference

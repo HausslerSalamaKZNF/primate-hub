@@ -6,6 +6,7 @@ include evaluation.txt
 
 
 track hubCentral
+html empty.html
 compositeTrack on
 shortLabel Cactus
 longLabel Cactus Alignment Tracks

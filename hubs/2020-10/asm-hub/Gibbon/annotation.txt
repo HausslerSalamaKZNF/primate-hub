@@ -1,4 +1,5 @@
 track Gibbon_external_reference_Gibbon
+html empty.html
 shortLabel Gibbon.external_reference
 longLabel Gibbon.external_reference
 description Gibbon.external_reference

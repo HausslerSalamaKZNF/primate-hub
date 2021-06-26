@@ -1,4 +1,5 @@
 track augustus_augCGP_Chimp
+html empty.html
 shortLabel AugustusCGP
 longLabel AugustusCGP
 description Comparative Augustus

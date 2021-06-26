@@ -15,9 +15,14 @@ done
 ** generate chromosome name mappings from assemblies used in the hub to genome browser
 (see http://genomewiki.ucsc.edu/index.php/Chromosome_name_conversion)
 
+Owl_monkey: not in browser or genark hubs
+Gibbon: is in genark, not a database, but will work.
+
+
+
 # create genomes/genomes.lst with
-Chimp Bonobo Gorilla Orangutan Rhesus Marmoset
-# put 2bits in genomes.lst
+Chimp Bonobo Gorilla Orangutan Rhesus Marmoset Human Gibbon
+
 
 # genomes/genomeMap.lst:
 Bonobo	panPan3
@@ -26,7 +31,7 @@ Gorilla	gorGor6
 Marmoset	calJac4
 Orangutan	ponAbe3
 Rhesus	rheMac10
-
+Human	hg38
 
 # this runs parasol
 cd mkkeys
@@ -38,14 +43,23 @@ for g in $(cat ../genomes/genomes.lst) ; do (~/kent/src/hg/utils/automation/doId
         mkkeys/$1/$1.idKeys.txt \
         /hive/data/genomes/$2/bed/idKeys/$2.idKeys.txt | tawk '{print $2,$3}'  >mappings/$1.mapping
 
+# must do gibbon separately do to being in genark GCF_006542625.1
+cd GCF_006542625.1
+https://hgdownload.soe.ucsc.edu/hubs/GCF/006/542/625/GCF_006542625.1/GCF_006542625.1.2bit
+~/kent/src/hg/utils/automation/doIdKeys.pl -buildDir=$(pwd) -twoBit=$(pwd)/GCF_006542625.1.2bit GCF_006542625.1
+cd ../..
+join -t $'\t' \
+    mkkeys/Gibbon/Gibbon.idKeys.txt  mkkeys/GCF_006542625.1/GCF_006542625.1.idKeys.txt  | tawk '{print $2,$3}'  >mappings/Gibbon.mapping
 
 ** rename sequences, then genomes
 for g in $(cat genomes/genomes.lst) ; do halRenameSequences primates_eichler-v2-ucsc.hal $g mappings/$g ; done
 halRenameGenomes primates_eichler-v2-ucsc.hal genomes/genomeMap.lst 
 
+
 ** rename hub data files
-these hack makes modify BEDs and BAMs (in bu
+these hack makes modify BEDs and BAMs
 hubs/2020-10/build-tools/doBamRename.mk
 hubs/2020-10/build-tools/doBedRename.mk
 
-
+** copy to courtyard
+rsync -a track-hub courtyard:/public/groups/cgl/hubs/primates/2020-10/&

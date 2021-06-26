@@ -1,4 +1,5 @@
 track bams_Chimp
+html empty.html
 group expression
 compositeTrack on
 shortLabel IsoSeq BAMs
