@@ -1,6 +1,6 @@
 
 
-all: do_Chimp do_Bonobo do_Gorilla do_Orangutan do_Rhesus do_Marmoset
+all: do_Chimp do_Bonobo do_Gorilla do_Orangutan do_Rhesus do_Marmoset do_Gibbon
 
 
 do_Bonobo:
@@ -15,6 +15,8 @@ do_Orangutan:
 	${MAKE} -f doBamRename.mk do_renames src=Orangutan dest=ponAbe3
 do_Rhesus:
 	${MAKE} -f doBamRename.mk do_renames src=Rhesus dest=rheMac10
+do_Gibbon:
+	${MAKE} -f doBamRename.mk do_renames src=Gibbon dest=GCF_006542625.1
 
 
 bbs = $(subst hub-in/,,$(wildcard hub-in/${src}/*.bam))
