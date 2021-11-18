@@ -1,9 +1,16 @@
+udcDir = ${TMPDIR}/markd/udcCache
 
-hubDir = /public/groups/cgl/cat/primates_jason/REDO/cat/gencode_v33/out/assemblyHub
-hubUrl = http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
+hubDir = /public/home/markd/public_html/primates-hubs/2020-10/asm-hub
+hubUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/2020-10/asm-hub/hut.txt
+
+# linked locations:
+# /public/groups/cgl/cat/primates_jason/REDO/cat/gencode_v33/out/assemblyHub
+# http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
+
 blatHost = hgwdev.gi.ucsc.edu
 blatPort = 4040
 blatHubRelDir = weblab/primate.2020-10-14
+editHubGenomes = ../../../bin/editHubGenomes 
 
 assemblies = \
     primate \
@@ -28,11 +35,11 @@ srcs = $(wildcard *.html *.txt) $(foreach a,${assemblies},$(wildcard $a/*.txt $a
 all: hub
 
 hub: ${srcs:%=${hubDir}/%}
-	hubCheck ${hubUrl}
+	hubCheck -udcDir=${udcDir} ${hubUrl}
 
 ${hubDir}/genomes.txt: genomes.txt
 	@mkdir -p $(dir $@)
-	../bin/editHubGenomes -v blatHost=${blatHost} -v blatPort=${blatPort} -v blatHubRelDir=${blatHubRelDir} $< > $@.tmp
+	${editHubGenomes} -v blatHost=${blatHost} -v blatPort=${blatPort} -v blatHubRelDir=${blatHubRelDir} $< > $@.tmp
 	mv -f $@.tmp $@
 
 ${hubDir}/%: %

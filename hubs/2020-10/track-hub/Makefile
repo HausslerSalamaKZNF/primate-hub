@@ -1,9 +1,15 @@
 
-#hubDir = /public/groups/cgl/cat/primates_jason/REDO/cat/gencode_v33/out/assemblyHub
-#hubUrl = http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
+hostname = $(shell hostname)
 
-hubDir = /hive/users/markd/kznf/projs/track-hub-work/track-hub
-hubUrl = http://hgwdev.gi.ucsc.edu/~markd/kznf/track-hub/hub.txt 
+udcDir = ${TMPDIR}/markd/udcCache
+
+ifeq (${hostname},hgwdev)
+   hubDir = /hive/users/markd/kznf/projs/track-hub-work/track-hub
+   hubUrl = http://hgwdev.gi.ucsc.edu/~markd/kznf/track-hub/hub.txt 
+else
+   hubDir = /public/home/markd/public_html/primates-hubs/2020-10/track-hub
+   hubUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/2020-10/track-hub/hub.txt
+endif
 
 assemblies = \
     Rhesus \
@@ -22,9 +28,7 @@ asmSrcs = $(subst ${asmDir}/,,$(foreach a,${assemblies},$(wildcard ${asmDir}/$a/
 all: hub
 
 hub: ${srcs:%=${hubDir}/%}  ${asmSrcs:%=${hubDir}/%}
-	hubCheck ${hubUrl}
-
-
+	hubCheck -udcDir=${udcDir} ${hubUrl}
 
 ${hubDir}/%: %
 	@mkdir -p $(dir $@)

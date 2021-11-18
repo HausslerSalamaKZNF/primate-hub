@@ -218,3 +218,4 @@ type bigBed 3
         group snake
         subGroups view=Snake orgs=Human
 
+include phyloPPrimates.trackDb.txt
