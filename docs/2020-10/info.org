@@ -13,7 +13,7 @@
 | Orangutan  | Pongo abelii            | Susie_PABv2                   | UW  | GCF_002880775.1 | RS   | ponAbe3         |
 | Gibbon     | Nomascus leucogenys     | Asia_NLE_v1                   | UW  | GCF_006542625.1 | RS   | GCF_006542625.1 |
 | Rhesus     | Macaca mulatta          | Mmul_10                       | WU  | GCF_003339765.1 | RS   | rheMac10        |
-| Marmoset   | Callithrix jacchus      | Callithrix_jacchus_cj1700_1.0 | WU  | GCA_009663435.1 | RS   | calJac4         |
+| Marmoset   | Callithrix jacchus      | Callithrix_jacchus_cj1700_1.1 | WU  | GCF_009663435.1 | RS   | calJac4         |
 | Owl_monkey | Aotus ???               | owl_monkey_indel_corrected    |     |                 | UN   | -               |
 | Mouse      | Mus musculus            | GRCm38                        |     |                 | RS   | mm10            |
 
