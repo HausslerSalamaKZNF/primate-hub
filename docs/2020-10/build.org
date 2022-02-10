@@ -63,3 +63,8 @@ hubs/2020-10/build-tools/doBedRename.mk
 
 ** copy to courtyard
 rsync -a track-hub courtyard:/public/groups/cgl/hubs/primates/2020-10/&
+
+* segdup tracks
+
+UW: Chimp Bonobo Gorilla Orangutan  Gibbon  
+WU: Rhesus  Marmoset
