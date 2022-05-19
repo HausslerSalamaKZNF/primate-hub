@@ -1,15 +1,12 @@
+#
+# new tracks are only being added to the trackHubs on top of the UCSC browser.
+# These tracks are in ${asm}/trackDb.txt
+# 
+root = ../../..
+include ../defs.mk
 
-hostname = $(shell hostname)
-
-udcDir = ${TMPDIR}/markd/udcCache
-
-ifeq (${hostname},hgwdev)
-   hubDir = /hive/users/markd/kznf/projs/track-hub-work/track-hub
-   hubUrl = http://hgwdev.gi.ucsc.edu/~markd/kznf/track-hub/hub.txt 
-else
-   hubDir = /public/home/markd/public_html/primates-hubs/2020-10/track-hub
-   hubUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/2020-10/track-hub/hub.txt
-endif
+hubDir = ${hubRootDir}/track-hub
+hubUrl = ${hubRootUrl}/track-hub/hub.txt
 
 assemblies = \
     Rhesus \

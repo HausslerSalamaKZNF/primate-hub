@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+from os import path as osp
+import argparse
+import pipettor
+from pycbio.sys import fileOps
+from pycbio.sys.svgcolors import SvgColors
+from pycbio.tsv import TsvReader
+
+
+bigBedAs = osp.normpath(osp.join(osp.dirname(__file__), "../etc/pseudopipe.as"))
+
+def parseArgs():
+    usage = """convert pseudopipe output to a BED """
+    parser = argparse.ArgumentParser(description=usage)
+    parser.add_argument('ucscDb')
+    parser.add_argument('pseudopipeOut')
+    parser.add_argument('bedOut',
+                        help="both bed and bigBed are created")
+    return parser.parse_args()
+
+# chr	start	end	strand	query	frac	ins	del	shift	stop	expect	ident	polya	type
+nonBedCols = ("frac", "ins", "del", "shift", "stop", "expect", "ident", "polya", "type")
+
+typeRgbColorMap = {
+    "DUP": SvgColors.darkblue,
+    "FRAG": SvgColors.darkorange,
+    "PSSD": SvgColors.darkgreen,
+}
+
+def typeRgbColor(pptype):
+    return typeRgbColorMap[pptype].toRgb8Str()
+
+def convertToBed(ppRec):
+    # naive mapping of chromName
+    chrom = "chr" + ppRec.chr
+    score = int(ppRec.ident * 1000)
+    return [chrom, ppRec.start, ppRec.end, ppRec.query, score, ppRec.strand,
+            ppRec.start, ppRec.end, typeRgbColor(ppRec.type)] + [ppRec[c] for c in nonBedCols]
+
+def convertToBeds(pseudopipeOut):
+    return sorted([convertToBed(ppRec)
+                   for ppRec in TsvReader(pseudopipeOut,
+                                          typeMap={"start": int, "end": int, "ident": float})],
+                  key=lambda p: p[0:3])
+
+def writeBeds(beds, bedOut):
+    with open(bedOut, "w") as fh:
+        for bed in beds:
+            fileOps.prRow(fh, bed)
+
+def makeBigBed(ucscDb, bedOut, bbOut):
+    chromSizes = f"/hive/data/genomes/{ucscDb}/chrom.sizes"
+    pipettor.run(["bedToBigBed", "-type=bed9+5", "-as=" + bigBedAs, "-extraIndex=name",
+                  bedOut, chromSizes, bbOut])
+
+def main(opts):
+    bbOut = osp.splitext(opts.bedOut)[1] + ".bb"
+    beds = convertToBeds(opts.pseudopipeOut)
+    writeBeds(beds, opts.bedOut)
+    makeBigBed(opts.ucscDb, opts.bedOut, bbOut)
+
+
+main(parseArgs())

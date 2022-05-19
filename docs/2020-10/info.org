@@ -10,8 +10,8 @@
 | Chimp      | Pan troglodytes         | Clint_PTRv2                   | UW  | GCF_002880755.1 | RS   | panTro6         |
 | Bonobo     | Pan paniscus            | Mhudiblu_PPA_v0               | UW  | GCF_013052645.1 | RS   | panPan3         |
 | Gorilla    | Gorilla gorilla gorilla | Kamilah_GGO_v0                | UW  | GCF_008122165.1 | RS   | gorGor6         |
-| Orangutan  | Pongo abelii            | Susie_PABv2                   | UW  | GCF_002880775.1 | RS   | ponAbe3         |
 | Gibbon     | Nomascus leucogenys     | Asia_NLE_v1                   | UW  | GCF_006542625.1 | RS   | GCF_006542625.1 |
+| Orangutan  | Pongo abelii            | Susie_PABv2                   | UW  | GCF_002880775.1 | RS   | ponAbe3         |
 | Rhesus     | Macaca mulatta          | Mmul_10                       | WU  | GCF_003339765.1 | RS   | rheMac10        |
 | Marmoset   | Callithrix jacchus      | Callithrix_jacchus_cj1700_1.1 | WU  | GCF_009663435.1 | RS   | calJac4         |
 | Owl_monkey | Aotus ???               | owl_monkey_indel_corrected    |     |                 | UN   | -               |
@@ -26,3 +26,17 @@ http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_
 
 ** assembly hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/asm-hub/hub.txt
 ** track hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/track-hub/hub.txt
+
+
+
+* repeat masker and pseudogenes
+| name      | UCSC            | rmsk | ppipe | retro |
+|-----------+-----------------+------+-------+-------|
+| Human     | hg38            |      |       |       |
+| Chimp     | panTro6         |      |   Y   |       |
+| Bonobo    | panPan3         |      |   Y   |       |
+| Gorilla   | gorGor6         |      |   Y   |       |
+| Orangutan | ponAbe3         |      |   Y   |       |
+| Gibbon    | GCF_006542625.1 |      |   N   |       |
+| Rhesus    | rheMac10        |      |   Y   |       |
+| Marmoset  | calJac4         |      |   Y   |       |

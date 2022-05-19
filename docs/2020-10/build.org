@@ -68,3 +68,57 @@ rsync -a track-hub courtyard:/public/groups/cgl/hubs/primates/2020-10/&
 
 UW: Chimp Bonobo Gorilla Orangutan  Gibbon  
 WU: Rhesus  Marmoset
+
+* yale pseudopipe predictions
+in ~/compbio/kznf/projs/outside-data/pseudopipe/
+
+Callithrix_jacchus.C_jacchus3.2.1.pgene.txt
+Gorilla_gorilla.gorGor4.pgene.txt
+Macaca_mulatta.Mmul_10.pgene.txt
+Pan_paniscus.panpan1.1.pgene.txt
+Pan_troglodytes.Pan_tro_3.0.pgene.txt
+Pongo_abelii.PPYG2.pgene.txt
+
+# also got GTFs, but they don't have block structure
+
+cd ~/compbio/kznf/projs/primate-test-hub/2020-10/track-hub
+
+
+../bin/pseudoPipeToBigBed panTro6 ../../outside-data/pseudopipe/Pan_troglodytes.Pan_tro_3.0.pgene.txt pseudopipe.bed
+
+End coordinate 224482623 bigger than chr1 size of 224244399 line 1141 of pseudopipe.bed
+
+chr1	224481603	224482623	ENSPTRP00000033770.3	530	-	224481603	224482623	0,0,139	0.98	11	55	7	4	4e-26	0.53	0	DUP
+
+# hmmm, different assembly for chimp
+
+* pseudopipe vs refseq comparison
+
+| common    | organism            | PP name        | PP acc          | PP date | PP stat | UCSC name                     | UCSC acc        | UCSC date | UCSC stat | Ensembl |
+|-----------+---------------------+----------------+-----------------+---------+---------+-------------------------------+-----------------+-----------+-----------+---------|
+| Chimp     | Pan troglodytes     | Pan_tro_3.0    | GCF_000001515.7 | 2016-05 | old     | Clint_PTRv2                   | GCF_002880755.1 |   2018-01 | yes       | yes     |
+| Bonobo    | Pan paniscus        | panpan1.1      | GCF_000258655.2 | 2015-08 | old     | Mhudiblu_PPA_v0               | GCF_013052645.1 |   2020-05 | no        | old     |
+| Gorilla   | Gorilla gorilla     | gorGor4        | GCF_000151905.2 | 2014-12 | old     | Kamilah_GGO_v0                | GCF_008122165.1 |   2019-08 | yes       | old     |
+| Gibbon    | Nomascus leucogenys |                |                 |         |         | Asia_NLE                      | GCF_006542625.1 |   2019-07 | yes       | old     |
+| Orangutan | Pongo abelii        | PPYG2          | ???             | 2007-09 | old     | Susie_PABv2                   | GCF_002880775.1 |   2018-01 | no        | yes     |
+| Rhesus    | Macaca mulatta      | Mmul_10        | GCF_003339765.1 | 2019-02 | current | Mmul_10                       | GCF_003339765.1 |   2019-02 | yes       | yes     |
+| Marmoset  | Callithrix jacchus  | C_jacchus3.2.1 | GCF_000004665.1 | 2010-01 | old     | Callithrix_jacchus_cj1700_1.1 | GCF_009663435.1 |   2020-05 | yes       | old     |
+|-----------+---------------------+----------------+-----------------+---------+---------+-------------------------------+-----------------+-----------+-----------+---------|
+
+** columns
+- for assembly being used by pseudopipe (PP) or  UCSC ZNF project
+  - acc - RefSeq accession of assembly used by Yale.
+  - name - pseudopipe assembly name from file name
+  - date - date of assembly
+  - stat - current RefSeq assembly or an older one
+- Ensembl - Does Ensembl have the refseq version UCSC is using
+
+** notes
+- I can't determine which NCBI Orangutan assembly corresponds to the Ensembl
+  has PPYG2, Sep 2007 in their archive, however I can't find it in NCBI.
+  There were occasions were Ensembl released browsers data directly from the
+  lab doing the assembly.  This caused so much grief that their is now an
+  agreement between the browser groups to only 
+- I believe the lastest version of Bonobo and Orangutan in RefSeq that UCSC
+  isn't using are new assemblies of the same sequences, with no new data
+  added.  UCSC is using the ones that are in the UCSC browser.

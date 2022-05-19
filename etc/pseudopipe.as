@@ -1,0 +1,22 @@
+table pseudopipe
+"Yale PseudoPipe Annotations"
+(
+    string  chrom;              "Reference chromosome"
+    uint    chromStart;         "Start position"
+    uint    chromEnd;           "End positon"
+    string  name;               "name of query"
+    uint    score;              "unused score"
+    char[1] strand;             "+ or - for strand"
+    uint    thickStart;         "thick start"
+    uint    thickEnd;           "thick end"
+    uint    color;              "color coded for type"
+    float   frac;               "frac"
+    uint    ins;                "ins"
+    uint    del;                "del"
+    uint    shift;              "shift"
+    uint    stop;               "stop"
+    float   expect;             "expect"
+    float   ident;              "ident"
+    uint    polya;              "polya"
+    string  type;               "type"
+)

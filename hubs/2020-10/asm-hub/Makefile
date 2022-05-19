@@ -1,11 +1,9 @@
-udcDir = ${TMPDIR}/markd/udcCache
+root = ../../..
+include ../defs.mk
 
-hubDir = /public/home/markd/public_html/primates-hubs/2020-10/asm-hub
-hubUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/2020-10/asm-hub/hut.txt
 
-# linked locations:
-# /public/groups/cgl/cat/primates_jason/REDO/cat/gencode_v33/out/assemblyHub
-# http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
+hubDir = ${hubRootDir}/asm-hub
+hubUrl = ${hubRootUrl}/asm-hub/hub.txt
 
 blatHost = hgwdev.gi.ucsc.edu
 blatPort = 4040
@@ -35,7 +33,12 @@ srcs = $(wildcard *.html *.txt) $(foreach a,${assemblies},$(wildcard $a/*.txt $a
 all: hub
 
 hub: ${srcs:%=${hubDir}/%}
-	hubCheck -udcDir=${udcDir} ${hubUrl}
+	${MAKE} hubChecks
+
+hubChecks: ${assemblies:%=%_hubCheck}
+
+%_hubCheck:
+	hubCheck -genome=$* -udcDir=${udcDir} ${hubUrl}
 
 ${hubDir}/genomes.txt: genomes.txt
 	@mkdir -p $(dir $@)
@@ -45,3 +48,4 @@ ${hubDir}/genomes.txt: genomes.txt
 ${hubDir}/%: %
 	@mkdir -p $(dir $@)
 	cp -f $< $@
+
