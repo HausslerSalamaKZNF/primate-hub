@@ -97,13 +97,13 @@ chr1	224481603	224482623	ENSPTRP00000033770.3	530	-	224481603	224482623	0,0,139	
 |-----------+---------------------+----------------+-----------------+---------+-----------+-------------------------------+-----------------+-----------+-------------+---------|
 | common    | organism            | PP name        | PP acc          | PP date | PP status | UCSC name                     | UCSC acc        | UCSC date | UCSC status | Ensembl |
 |-----------+---------------------+----------------+-----------------+---------+-----------+-------------------------------+-----------------+-----------+-------------+---------|
-| Chimp     | Pan troglodytes     | Pan_tro_3.0    | GCF_000001515.7 | 2016-05 | old       | Clint_PTRv2                   | GCF_002880755.1 |   2018-01 | yes         | yes     |
-| Bonobo    | Pan paniscus        | panpan1.1      | GCF_000258655.2 | 2015-08 | old       | Mhudiblu_PPA_v0               | GCF_013052645.1 |   2020-05 | no          | old     |
-| Gorilla   | Gorilla gorilla     | gorGor4        | GCF_000151905.2 | 2014-12 | old       | Kamilah_GGO_v0                | GCF_008122165.1 |   2019-08 | yes         | old     |
-| Gibbon    | Nomascus leucogenys |                |                 |         |           | Asia_NLE                      | GCF_006542625.1 |   2019-07 | yes         | old     |
-| Orangutan | Pongo abelii        | PPYG2          | ???             | 2007-09 | old       | Susie_PABv2                   | GCF_002880775.1 |   2018-01 | no          | yes     |
-| Rhesus    | Macaca mulatta      | Mmul_10        | GCF_003339765.1 | 2019-02 | current   | Mmul_10                       | GCF_003339765.1 |   2019-02 | yes         | yes     |
-| Marmoset  | Callithrix jacchus  | C_jacchus3.2.1 | GCF_000004665.1 | 2010-01 | old       | Callithrix_jacchus_cj1700_1.1 | GCF_009663435.1 |   2020-05 | yes         | old     |
+| Chimp     | Pan troglodytes     | Pan_tro_3.0    | GCF_000001515.7 | 2016-05 | old       | Clint_PTRv2                   | GCF_002880755.1 |   2018-01 | current     | yes     |
+| Bonobo    | Pan paniscus        | panpan1.1      | GCF_000258655.2 | 2015-08 | old       | Mhudiblu_PPA_v0               | GCF_013052645.1 |   2020-05 | current     | old     |
+| Gorilla   | Gorilla gorilla     | gorGor4        | GCF_000151905.2 | 2014-12 | old       | Kamilah_GGO_v0                | GCF_008122165.1 |   2019-08 | current     | old     |
+| Gibbon    | Nomascus leucogenys |                |                 |         |           | Asia_NLE                      | GCF_006542625.1 |   2019-07 | current     | old     |
+| Orangutan | Pongo abelii        | PPYG2          | ???             | 2007-09 | old       | Susie_PABv2                   | GCF_002880775.1 |   2018-01 | current     | yes     |
+| Rhesus    | Macaca mulatta      | Mmul_10        | GCF_003339765.1 | 2019-02 | current   | Mmul_10                       | GCF_003339765.1 |   2019-02 | current     | yes     |
+| Marmoset  | Callithrix jacchus  | C_jacchus3.2.1 | GCF_000004665.1 | 2010-01 | old       | Callithrix_jacchus_cj1700_1.1 | GCF_009663435.1 |   2020-05 | current     | old     |
 |-----------+---------------------+----------------+-----------------+---------+-----------+-------------------------------+-----------------+-----------+-------------+---------|
 
 ** columns
@@ -111,7 +111,7 @@ chr1	224481603	224482623	ENSPTRP00000033770.3	530	-	224481603	224482623	0,0,139	
   - acc - RefSeq accession of assembly used by Yale.
   - name - pseudopipe assembly name from file name
   - date - date of assembly
-  - status - current RefSeq assembly or an older one
+  - status - current RefSeq assembly, an older one or there is a new one.
 - Ensembl - Does Ensembl have the refseq version UCSC is using
 
 ** notes
@@ -120,6 +120,18 @@ chr1	224481603	224482623	ENSPTRP00000033770.3	530	-	224481603	224482623	0,0,139	
   There were occasions were Ensembl released browsers data directly from the
   lab doing the assembly.  This caused so much grief that their is now an
   agreement between the browser groups to only 
-- I believe the lastest version of Bonobo and Orangutan in RefSeq that UCSC
-  isn't using are new assemblies of the same sequences, with no new data
-  added.  UCSC is using the ones that are in the UCSC browser.
+- There are new GenBank assemblies of Bonobo and Orangutan, but not RefSeq.
+  These are updated to the previous assemblies by the same groups
+
+** summary for Yale
+|-----------+---------------------+-----------+-----------------+-------------+---------|
+| common    | organism            | PP status | UCSC acc        | UCSC status | Ensembl |
+|-----------+---------------------+-----------+-----------------+-------------+---------|
+| Chimp     | Pan troglodytes     | old       | GCF_002880755.1 | current     | yes     |
+| Bonobo    | Pan paniscus        | old       | GCF_013052645.1 | current     | old     |
+| Gorilla   | Gorilla gorilla     | old       | GCF_008122165.1 | current     | old     |
+| Gibbon    | Nomascus leucogenys |           | GCF_006542625.1 | current     | old     |
+| Orangutan | Pongo abelii        | old       | GCF_002880775.1 | current     | yes     |
+| Rhesus    | Macaca mulatta      | current   | GCF_003339765.1 | current     | yes     |
+| Marmoset  | Callithrix jacchus  | old       | GCF_009663435.1 | current     | old     |
+|-----------+---------------------+-----------+-----------------+-------------+---------|
