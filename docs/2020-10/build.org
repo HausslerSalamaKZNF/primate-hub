@@ -94,23 +94,24 @@ chr1	224481603	224482623	ENSPTRP00000033770.3	530	-	224481603	224482623	0,0,139	
 
 * pseudopipe vs refseq comparison
 
-| common    | organism            | PP name        | PP acc          | PP date | PP stat | UCSC name                     | UCSC acc        | UCSC date | UCSC stat | Ensembl |
-|-----------+---------------------+----------------+-----------------+---------+---------+-------------------------------+-----------------+-----------+-----------+---------|
-| Chimp     | Pan troglodytes     | Pan_tro_3.0    | GCF_000001515.7 | 2016-05 | old     | Clint_PTRv2                   | GCF_002880755.1 |   2018-01 | yes       | yes     |
-| Bonobo    | Pan paniscus        | panpan1.1      | GCF_000258655.2 | 2015-08 | old     | Mhudiblu_PPA_v0               | GCF_013052645.1 |   2020-05 | no        | old     |
-| Gorilla   | Gorilla gorilla     | gorGor4        | GCF_000151905.2 | 2014-12 | old     | Kamilah_GGO_v0                | GCF_008122165.1 |   2019-08 | yes       | old     |
-| Gibbon    | Nomascus leucogenys |                |                 |         |         | Asia_NLE                      | GCF_006542625.1 |   2019-07 | yes       | old     |
-| Orangutan | Pongo abelii        | PPYG2          | ???             | 2007-09 | old     | Susie_PABv2                   | GCF_002880775.1 |   2018-01 | no        | yes     |
-| Rhesus    | Macaca mulatta      | Mmul_10        | GCF_003339765.1 | 2019-02 | current | Mmul_10                       | GCF_003339765.1 |   2019-02 | yes       | yes     |
-| Marmoset  | Callithrix jacchus  | C_jacchus3.2.1 | GCF_000004665.1 | 2010-01 | old     | Callithrix_jacchus_cj1700_1.1 | GCF_009663435.1 |   2020-05 | yes       | old     |
-|-----------+---------------------+----------------+-----------------+---------+---------+-------------------------------+-----------------+-----------+-----------+---------|
+|-----------+---------------------+----------------+-----------------+---------+-----------+-------------------------------+-----------------+-----------+-------------+---------|
+| common    | organism            | PP name        | PP acc          | PP date | PP status | UCSC name                     | UCSC acc        | UCSC date | UCSC status | Ensembl |
+|-----------+---------------------+----------------+-----------------+---------+-----------+-------------------------------+-----------------+-----------+-------------+---------|
+| Chimp     | Pan troglodytes     | Pan_tro_3.0    | GCF_000001515.7 | 2016-05 | old       | Clint_PTRv2                   | GCF_002880755.1 |   2018-01 | yes         | yes     |
+| Bonobo    | Pan paniscus        | panpan1.1      | GCF_000258655.2 | 2015-08 | old       | Mhudiblu_PPA_v0               | GCF_013052645.1 |   2020-05 | no          | old     |
+| Gorilla   | Gorilla gorilla     | gorGor4        | GCF_000151905.2 | 2014-12 | old       | Kamilah_GGO_v0                | GCF_008122165.1 |   2019-08 | yes         | old     |
+| Gibbon    | Nomascus leucogenys |                |                 |         |           | Asia_NLE                      | GCF_006542625.1 |   2019-07 | yes         | old     |
+| Orangutan | Pongo abelii        | PPYG2          | ???             | 2007-09 | old       | Susie_PABv2                   | GCF_002880775.1 |   2018-01 | no          | yes     |
+| Rhesus    | Macaca mulatta      | Mmul_10        | GCF_003339765.1 | 2019-02 | current   | Mmul_10                       | GCF_003339765.1 |   2019-02 | yes         | yes     |
+| Marmoset  | Callithrix jacchus  | C_jacchus3.2.1 | GCF_000004665.1 | 2010-01 | old       | Callithrix_jacchus_cj1700_1.1 | GCF_009663435.1 |   2020-05 | yes         | old     |
+|-----------+---------------------+----------------+-----------------+---------+-----------+-------------------------------+-----------------+-----------+-------------+---------|
 
 ** columns
-- for assembly being used by pseudopipe (PP) or  UCSC ZNF project
+- for assembly being used by pseudopipe (PP) or UCSC Browser
   - acc - RefSeq accession of assembly used by Yale.
   - name - pseudopipe assembly name from file name
   - date - date of assembly
-  - stat - current RefSeq assembly or an older one
+  - status - current RefSeq assembly or an older one
 - Ensembl - Does Ensembl have the refseq version UCSC is using
 
 ** notes
