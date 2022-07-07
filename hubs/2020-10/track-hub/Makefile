@@ -5,8 +5,9 @@
 root = ../../..
 include ../defs.mk
 
-hubDir = ${hubRootDir}/track-hub
-hubUrl = ${hubRootUrl}/track-hub/hub.txt
+hub_dir = ${hubRootDir}/track-hub
+hub_url = ${hubRootUrl}/track-hub/hub.txt
+asm_hub_dir = ../asm-hub
 
 assemblies = \
     Rhesus \
@@ -18,24 +19,69 @@ assemblies = \
     Human \
     Gibbon
 
-srcs = $(wildcard *.html *.txt)
-asmDir = ../asm-hub
-asmSrcs = $(subst ${asmDir}/,,$(foreach a,${assemblies},$(wildcard ${asmDir}/$a/*.txt ${asmDir}/$a/*.html ${asmDir}/$a/*/*.txt ${asmDir}/$a/*/*.html)))
+ucsc_asm_Rhesus = rheMac10
+ucsc_asm_Marmoset = calJac4
+ucsc_asm_Gibbon = GCF_006542625.1
+ucsc_asm_Orangutan = ponAbe3
+ucsc_asm_Gorilla = gorGor6
+ucsc_asm_Chimp = panTro6
+ucsc_asm_Bonobo = panPan3
+ucsc_asm_Human = hg38
 
-all: hub
+top_srcs = $(wildcard *.html *.txt html/*.html)
+top_dests = ${top_srcs:%=${hub_dir}/%}
 
-hub: ${srcs:%=${hubDir}/%}  ${asmSrcs:%=${hubDir}/%}
-	hubCheck -udcDir=${udcDir} ${hubUrl}
+all: build
 
-${hubDir}/%: %
+build: ${top_dests} build_asms
+	${MAKE} check
+
+build_asms: ${assemblies:%=build_asm_%}
+build_asm_%:
+	${MAKE} build_asm asm=$*
+
+check: ${assemblies:%=check_asm_%}
+check_asm_%:
+	${MAKE} check_asm asm=$*
+
+clean: ${assemblies:%=clean_asm_%}
+	rm -f ${top_dests}
+clean_asm_%:
+	${MAKE} clean_asm asm=$*
+
+# recursive: asm=
+asm_hub_html = $(wildcard ${asm_hub_dir}/${asm}/*.html)
+track_hub_html = $(wildcard ${asm}/*.html)
+dest_html = $(subst ${asm_hub_dir}/,${hub_dir}/,${asm_hub_html}) ${track_hub_html:%=${hub_dir}/%}
+
+# all trackDb dependencies these are combined and edits
+asm_hub_txt = $(wildcard ${asm_hub_dir}/${asm}/*.txt)
+track_hub_txt = $(wildcard ${asm}/*.txt) $(wildcard trackDb/*.txt)
+
+src_trackdb = ${asm_hub_txt} ${track_hub_txt}
+
+dest_trackdb = ${hub_dir}/${asm}/trackDb.txt
+
+build_asm: ${dest_html} ${dest_trackdb}
+
+asmSrcs = $(subst ${asm_hub_dir}/,,$(foreach a,${assemblies},$(wildcard ${asm_hub_dir}/$a/*.txt ${asm_hub_dir}/$a/*.html ${asm_hub_dir}/$a/*/*.txt ${asm_hub_dir}/$a/*/*.html)))
+
+${hub_dir}/%: %
+	@mkdir -p $(dir $@)
+	cp -f $< $@
+${hub_dir}/%: ${asm_hub_dir}/%
 	@mkdir -p $(dir $@)
 	cp -f $< $@
 
-${hubDir}/%/trackDb.txt: ${asmDir}/%/trackDb.txt
+${dest_trackdb}: ${src_trackdb}
 	@mkdir -p $(dir $@)
-	./editTrackDb $< $@.tmp
+	./editTrackDb --out=$@.tmp ${asm_hub_dir}/${asm}/trackDb.txt ${asm}/trackDb.txt
 	mv -f $@.tmp $@
 
-${hubDir}/%: ${asmDir}/%
-	@mkdir -p $(dir $@)
-	cp -f $< $@
+clean_asm:
+	rm -rf ${dest_html} ${dest_trackdb}
+
+
+check_asm:
+	hubCheck -genome=${ucsc_asm_${asm}} -udcDir=${udcDir} ${hub_url}
+

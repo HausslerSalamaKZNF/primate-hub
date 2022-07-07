@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+import sys
+import argparse
+import tempfile
+from pycbio.sys import fileOps
+import pipettor
+
+
+def parseArgs():
+    usage = """build a bigBed file from one or more inputs, doing various
+    edits and cleanup"""
+    parser = argparse.ArgumentParser(description=usage)
+    parser.add_argument('--keep', action="store_true")
+    parser.add_argument('--as', dest="asFile")
+    parser.add_argument('--extraIndex')
+    parser.add_argument('bedType')
+    parser.add_argument('genomeTwoBit')
+    parser.add_argument('bigBedOut')
+    parser.add_argument('inBeds', nargs='+')
+    return parser.parse_args()
+
+bedSortCmd = ["bedSort", "/dev/stdin", "/dev/stdout"]
+
+def loadChromNames(genomeTwoBit):
+    pl = pipettor.Popen(["twoBitInfo", genomeTwoBit, "/dev/stdout"])
+    try:
+        return frozenset([r[0] for r in fileOps.iterRows(pl)])
+    finally:
+        pl.close()
+
+def editBedRec(line, outBedFh, chromNames, reportedUnknownChroms):
+    if line.startswith("track") or line.startswith("#"):
+        return False
+    row = line.split('\t')
+    if row[0] not in chromNames:
+        if row[0] not in reportedUnknownChroms:
+            print("Unknown chrom:", row[0], file=sys.stderr)
+            reportedUnknownChroms.add(row[0])
+        return False
+    outBedFh.write(line)
+    return True
+
+def copyBeds(inBeds, outBedFh, chromNames):
+    reportedUnknownChroms = set()
+    for inBed in inBeds:
+        with fileOps.opengz(inBed) as inBedFh:
+            for line in inBedFh:
+                editBedRec(line, outBedFh, chromNames, reportedUnknownChroms)
+
+def createInBed(inBeds, tmpBedFh, chromNames):
+    with pipettor.Popen([bedSortCmd], "w", stdout=tmpBedFh) as outBedFh:
+        copyBeds(inBeds, outBedFh, chromNames)
+
+def bedToBigBed(tmpBed, bigBedOut, bedType, asFile, extraIndex, genomeTwoBit):
+    cmd = ["bedToBigBed", "-type=" + bedType, "-tab", "-sizesIs2Bit"]
+    if asFile is not None:
+        cmd += ["-as=" + asFile]
+    if extraIndex is not None:
+        cmd += ["-extraIndex=" + extraIndex]
+    cmd += [tmpBed, genomeTwoBit, bigBedOut]
+    pipettor.run(cmd)
+
+def buildBigBed(inBeds, bigBedOut, keep, bedType, asFile, extraIndex, genomeTwoBit, chromNames):
+    with tempfile.NamedTemporaryFile(delete=not keep) as tmpBedFh:
+        if keep:
+            print("keeping temporary bed:", tmpBedFh.name, file=sys.stderr)
+        createInBed(inBeds, tmpBedFh, chromNames)
+        bedToBigBed(tmpBedFh.name, bigBedOut, bedType, asFile, extraIndex, genomeTwoBit)
+
+def main(args):
+    chromNames = loadChromNames(args.genomeTwoBit)
+    buildBigBed(args.inBeds, args.bigBedOut, args.keep, args.bedType, args.asFile, args.extraIndex, args.genomeTwoBit, chromNames)
+
+main(parseArgs())

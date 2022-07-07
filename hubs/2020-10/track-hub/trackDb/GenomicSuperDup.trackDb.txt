@@ -1,0 +1,10 @@
+track genomicSuperDups
+shortLabel Segmental Dups
+longLabel Duplications of >1000 Bases of Non-RepeatMasked Sequence
+group varRep
+visibility hide
+noScoreFilter .
+type bigBed 6 +
+bigDataUrl GenomicSuperDup.bb
+html ../html/GenomicSuperDup.html
+

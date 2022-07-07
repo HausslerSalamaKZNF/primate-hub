@@ -7,9 +7,6 @@ hostname = $(shell hostname)
 
 buildDate = 2020-10
 
-hubDir = /public/home/markd/public_html/primates-hubs/${buildDate}/asm-hub
-hubUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/${buildDate}/asm-hub/hut.txt
-
 ifeq (${hostname},hgwdev)
    hubRootDir = /hive/users/markd/kznf/projs/primate-test-hub/2020-10
    hubRootUrl = http://hgwdev.gi.ucsc.edu/~markd/kznf/primate-test-hub/2020-10
@@ -20,6 +17,7 @@ else
    hubRootDir = /public/home/markd/public_html/primates-hubs/${buildDate}
    hubRootUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/${buildDate}
 endif
+
 
 udcDir = ${TMPDIR}/markd/udcCache
 

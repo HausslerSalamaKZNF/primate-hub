@@ -135,3 +135,61 @@ chr1	224481603	224482623	ENSPTRP00000033770.3	530	-	224481603	224482623	0,0,139	
 | Rhesus    | Macaca mulatta      | current   | GCF_003339765.1 | current     | yes     |
 | Marmoset  | Callithrix jacchus  | old       | GCF_009663435.1 | current     | old     |
 |-----------+---------------------+-----------+-----------------+-------------+---------|
+
+- I believe the lastest version of Bonobo and Orangutan in RefSeq that UCSC
+  isn't using are new assemblies of the same sequences, with no new data
+  added.  UCSC is using the ones that are in the UCSC browser.
+
+
+* WGAC segdups from UW
+cd ${trackHub}/2020-10/track-hub
+** analysis 
+https://drive.google.com/file/d/1yOrIUrhpJc72bX3XJ2QyGjkTcfBqkQzO/view?usp=drive_web
+** files:
+https://eichlerlab.gs.washington.edu/public/dgordon/Mark_Diekhans/ucsc_2022_feb_marmoset/GenomicSuperDup.tab
+https://eichlerlab.gs.washington.edu/public/dgordon/Mark_Diekhans/GCF_008122165.1_gorilla_ncbi_masking_ucsc_names/GenomicSuperDup.tab
+https://eichlerlab.gs.washington.edu/public/dgordon/Mark_Diekhans/panTro6/GenomicSuperDup.tab
+https://eichlerlab.gs.washington.edu/public/dgordon/Mark_Diekhans/ponAbe3_orangutan/GenomicSuperDup.tab
+https://eichlerlab.gs.washington.edu/public/dgordon/Mark_Diekhans/GCF_013052645.1_Mhudiblu_PPA_v0/GenomicSuperDup.tab
+https://eichlerlab.gs.washington.edu/public/dgordon/Mark_Diekhans/GCF_006542625.1_gibbon_ucsc_names/GenomicSuperDup.tab
+https://eichlerlab.gs.washington.edu/public/dgordon/Mark_Diekhans/GCA_003339765.3_Mmul_10/GenomicSuperDup.tab
+
+
+** edits required:
+need to changes chrom names in name and column six, so generate sed scripts to fix
+
+primateHub=../../..
+
+*** Bonobo/panPan3 refseq names
+
+copy /hive/data/genomes/panPan3/bed/chromAlias/panPan3.chromAlias.tab
+to primate-hub/hubs/2020-10/build-tools/panPan3.sed
+and edit to be like s/NC_048239\.1/chr1/g
+
+mv Bonobo/GenomicSuperDup.tab  Bonobo/GenomicSuperDup.refseq.tab
+sed -f ${primateHub}/hubs/2020-10/build-tools/panPan3.sed  Bonobo/GenomicSuperDup.refseq.tab  | sort -k1,1 -k2,2n > Bonobo/GenomicSuperDup.tab
+
+*** Rhesus/rheMac10 genbank names, UCSC is based on RefSeq version
+
+copy /hive/data/genomes/rheMac10/bed/chromAlias/rheMac10.chromAlias.tab
+to primate-hub/hubs/2020-10/build-tools/rheMac10.sed
+and edit to be like s/CM014336\.1/chr1/g
+
+also need to drop entries that don't make to chromsome, both in chrom field
+and name files
+
+mv Rhesus/GenomicSuperDup.tab  Rhesus/GenomicSuperDup.genbank.tab
+sed -f ${primateHub}/hubs/2020-10/build-tools/rheMac10.sed Rhesus/GenomicSuperDup.genbank.tab  | sort -k1,1 -k2,2n | awk '(($1 ~ /^chr/) && ($4 ~ /^chr/))'   > Rhesus/GenomicSuperDup.tab
+
+*** Gorilla/gorGor3
+due to a process error at UW,
+names like got mapped to chr6_NW_022149425v1_random, fix these  chrUn_NW_022149425v1	
+mv Gorilla/GenomicSuperDup.tab  Gorilla//GenomicSuperDup.probs.tab
+sed -f ${primateHub}/hubs/2020-10/build-tools/gorGor6.sed  Gorilla/GenomicSuperDup.probs.tab | sort -k1,1 -k2,2n > Gorilla/GenomicSuperDup.tab
+
+** build bigbeds
+cd ${trackHub}/2020-10/track-hub
+# run 
+${primateHub}/hubs/2020-10/build-tools/mkGsuper.bash
+# logs should not have warnings
+ls -l */*.log

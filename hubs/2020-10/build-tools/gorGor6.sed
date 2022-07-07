@@ -1,0 +1,15 @@
+s/chrUn_NW_022149235v1/chr6_NW_022149235v1_random/g
+s/chrUn_NW_022149240v1/chr6_NW_022149240v1_random/g
+s/chrUn_NW_022149262v1/chr6_NW_022149262v1_random/g
+s/chrUn_NW_022149269v1/chr6_NW_022149269v1_random/g
+s/chrUn_NW_022149282v1/chr6_NW_022149282v1_random/g
+s/chrUn_NW_022149283v1/chr6_NW_022149283v1_random/g
+s/chrUn_NW_022149290v1/chr6_NW_022149290v1_random/g
+s/chrUn_NW_022149299v1/chr6_NW_022149299v1_random/g
+s/chrUn_NW_022149340v1/chr6_NW_022149340v1_random/g
+s/chrUn_NW_022149361v1/chr6_NW_022149361v1_random/g
+s/chrUn_NW_022149376v1/chr6_NW_022149376v1_random/g
+s/chrUn_NW_022149386v1/chr6_NW_022149386v1_random/g
+s/chrUn_NW_022149387v1/chr6_NW_022149387v1_random/g
+s/chrUn_NW_022149395v1/chr6_NW_022149395v1_random/g
+s/chrUn_NW_022149425v1/chr6_NW_022149425v1_random/g

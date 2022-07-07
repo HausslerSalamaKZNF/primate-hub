@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
+import os.path as osp
 import re
 import argparse
 
 
 def parseArgs():
-    desc = """edit trackDb.txt file to deal with snake track names
+    desc = """edit trackDb.txt files to deal with snake track names and
+    combine includes. Takes multiple trackDbs.
     """
     parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument("inTrackDbTxt")
-    parser.add_argument("outTrackDbTxt")
+    parser.add_argument("--out", dest="outTrackDbTxt", default='/dev/stdout')
+    parser.add_argument("inTrackDbTxts", nargs='+')
     return parser.parse_args()
 
 genomeMap = {
@@ -23,41 +25,77 @@ genomeMap = {
 }
 
 def raRead(trackDbTxt):
+    "each stanza is split into a single string"
     with open(trackDbTxt) as fh:
         return re.split('\n\n+', fh.read())
 
-def isSnake(stz):
-    return re.search('track snake', stz)
+def parseInclude(stanza):
+    "return file name, or None if not an include"
+    m = re.search(r"^\s*include\s+(\S+)", stanza)
+    if m is None:
+        return None
+    else:
+        return m.group(1)
 
-def getSpecies(stz):
-    return re.search('otherSpecies (.+)\n', stz).group(1)
+def relInclPath(trackDbTxt, inclFile):
+    if osp.isabs(inclFile):
+        return inclFile
+    else:
+        return osp.join(osp.dirname(trackDbTxt), inclFile)
 
-def replaceSpecies(stz, oldSpecies, newSpecies):
-    stz = stz.replace('otherSpecies ' + oldSpecies, 'otherSpecies ' + newSpecies)
-    stz = stz.replace('../primates_eichler-v2.hal', '../primates_eichler-v2-ucsc.hal')
-    return stz
+def readInclude(trackDbTxt, inclFile):
+    return raReadExpand(relInclPath(trackDbTxt, inclFile))
 
-def writeStz(stz, fh):
-    fh.write(stz)
+def _raReadPart(trackDbTxt, part):
+    inclFile = parseInclude(part)
+    if inclFile is not None:
+        return readInclude(trackDbTxt, inclFile)
+    else:
+        return [part]
+
+def raReadExpand(trackDbTxt):
+    "read and expand includes, as a list of stanzas"
+    expanded = []
+    for stanza in raRead(trackDbTxt):
+        for part in re.split(r"(^\s*include\s+[^\n]+\n)", stanza, flags=re.MULTILINE):
+            if part != '':
+                expanded += _raReadPart(trackDbTxt, part)
+    return expanded
+
+
+def readAllTrackDb(trackDbTxts):
+    stanzas = []
+    for trackDbTxt in trackDbTxts:
+        stanzas += raReadExpand(trackDbTxt)
+    return stanzas
+
+def isSnake(stanza):
+    return re.search('track snake', stanza)
+
+def getOtherSpecies(stanza):
+    return re.search('otherSpecies (.+)\n', stanza).group(1)
+
+def editSnakeStanza(stanza):
+    otherSpecies = getOtherSpecies(stanza)
+    if otherSpecies in genomeMap:
+        stanza = stanza.replace('otherSpecies ' + otherSpecies, 'otherSpecies ' + genomeMap[otherSpecies])
+    stanza = stanza.replace('../primates_eichler-v2.hal', '../primates_eichler-v2-ucsc.hal')
+    return stanza
+
+def editStanza(stanza):
+    if isSnake(stanza):
+        return editSnakeStanza(stanza)
+    else:
+        return stanza
+
+def writeStanza(stanza, fh):
+    fh.write(stanza)
     fh.write('\n\n')
 
-def processSnake(stz, fh):
-    species = getSpecies(stz)
-    if species in genomeMap:
-        writeStz(replaceSpecies(stz, species, genomeMap[species]), fh)
-
-def processStanza(stz, fh):
-    if isSnake(stz):
-        processSnake(stz, fh)
-    else:
-        writeStz(stz, fh)
-
-
 def editTrackDb(args):
-    stanzas = raRead(args.inTrackDbTxt)
-
+    stanzas = readAllTrackDb(args.inTrackDbTxts)
     with open(args.outTrackDbTxt, 'w') as fh:
-        for stz in stanzas:
-            processStanza(stz, fh)
+        for stanza in stanzas:
+            writeStanza(editStanza(stanza), fh)
 
 editTrackDb(parseArgs())
