@@ -26,7 +26,7 @@ type bigBed 3
     track hubCentralAlignments
     shortLabel Alignments
     view Alignments
-    visibility full
+    visibility hide
     subTrack hubCentral
 
         track snakeprimate
@@ -213,7 +213,7 @@ type bigBed 3
         longLabel Human
         shortLabel Human
         otherSpecies Human
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal

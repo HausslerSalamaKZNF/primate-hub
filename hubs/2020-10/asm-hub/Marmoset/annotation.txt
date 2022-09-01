@@ -7,7 +7,7 @@ type bigGenePred
 group cat_tracks
 itemRgb on
 priority 3
-visibility pack
+visibility hide
 searchIndex name,name2,geneId,transcriptId
 bigDataUrl annotation.bb
 labelFields name,name2,geneId,transcriptId

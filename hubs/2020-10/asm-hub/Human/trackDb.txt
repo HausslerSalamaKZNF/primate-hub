@@ -23,14 +23,14 @@ type bigBed 3
     track hubCentralAlignments
     shortLabel Alignments
     view Alignments
-    visibility full
+    visibility hide
     subTrack hubCentral
 
         track snakeprimate
         longLabel primate
         shortLabel primate
         otherSpecies primate
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -42,7 +42,7 @@ type bigBed 3
         longLabel platyrrhini
         shortLabel platyrrhini
         otherSpecies platyrrhini
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -54,7 +54,7 @@ type bigBed 3
         longLabel hylobatidae
         shortLabel hylobatidae
         otherSpecies hylobatidae
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -66,7 +66,7 @@ type bigBed 3
         longLabel Rhesus
         shortLabel Rhesus
         otherSpecies Rhesus
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -78,7 +78,7 @@ type bigBed 3
         longLabel Owl_monkey
         shortLabel Owl_monkey
         otherSpecies Owl_monkey
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -90,7 +90,7 @@ type bigBed 3
         longLabel Marmoset
         shortLabel Marmoset
         otherSpecies Marmoset
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -102,7 +102,7 @@ type bigBed 3
         longLabel hominidae
         shortLabel hominidae
         otherSpecies hominidae
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -114,7 +114,7 @@ type bigBed 3
         longLabel Gibbon
         shortLabel Gibbon
         otherSpecies Gibbon
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -126,7 +126,7 @@ type bigBed 3
         longLabel human_chimp_bonobo_gorilla
         shortLabel human_chimp_bonobo_gorilla
         otherSpecies human_chimp_bonobo_gorilla
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -138,7 +138,7 @@ type bigBed 3
         longLabel Orangutan
         shortLabel Orangutan
         otherSpecies Orangutan
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -150,7 +150,7 @@ type bigBed 3
         longLabel human_chimp_bonobo
         shortLabel human_chimp_bonobo
         otherSpecies human_chimp_bonobo
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -162,7 +162,7 @@ type bigBed 3
         longLabel Gorilla
         shortLabel Gorilla
         otherSpecies Gorilla
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -174,7 +174,7 @@ type bigBed 3
         longLabel chimp_bonobo
         shortLabel chimp_bonobo
         otherSpecies chimp_bonobo
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -186,7 +186,7 @@ type bigBed 3
         longLabel Chimp
         shortLabel Chimp
         otherSpecies Chimp
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
@@ -198,7 +198,7 @@ type bigBed 3
         longLabel Bonobo
         shortLabel Bonobo
         otherSpecies Bonobo
-        visibility full
+        visibility hide
         parent hubCentralAlignments off
         priority 3
         bigDataUrl ../primates_eichler-v2.hal
