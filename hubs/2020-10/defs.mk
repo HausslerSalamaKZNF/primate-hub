@@ -1,6 +1,4 @@
 
-root = ../../..
-
 .SECONDARY:
 
 hostname = $(shell hostname)
@@ -17,6 +15,11 @@ else
    hubRootDir = /public/home/markd/public_html/primates-hubs/${buildDate}
    hubRootUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/${buildDate}
 endif
+
+pub_hub_host = courtyard
+pub_hub_dir = /public/groups/cgl/hubs/primates/2020-10
+pub_asm_hub_dir = ${pub_hub_dir}/asm-hub
+pub_track_hub_dir = ${pub_hub_dir}/track-hub
 
 
 udcDir = ${TMPDIR}/markd/udcCache

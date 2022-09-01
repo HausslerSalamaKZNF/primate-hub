@@ -85,3 +85,6 @@ clean_asm:
 check_asm:
 	hubCheck -genome=${ucsc_asm_${asm}} -udcDir=${udcDir} ${hub_url}
 
+
+sync:
+	cd ${hubRootDir} && rsync -av track-hub ${pub_hub_host}:${pub_hub_dir}

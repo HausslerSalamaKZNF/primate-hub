@@ -25,3 +25,4 @@ tmpExt = $(shell hostname).$(shell echo $$PPID).tmp
 tmpExtGz = ${tmpExt}.gz
 
 pseudoPipeToBigBed = ${binDir}/pseudoPipeToBigBed
+
