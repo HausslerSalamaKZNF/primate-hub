@@ -1,63 +1,169 @@
 #!/usr/bin/env python3
+import sys
 from os import path as osp
 import argparse
 import pipettor
 from pycbio.sys import fileOps
+from pycbio.sys.symEnum import SymEnum, auto
 from pycbio.sys.svgcolors import SvgColors
 from pycbio.tsv import TsvReader
+from pycbio.db import sqliteOps
 
+
+sys.path.insert(0, osp.expanduser("~/compbio/kznf/projs/gene-homology/kznf-gene-homology/lib"))
+from kznfhom import genomeData
+from kznfhom.refseq import refseqParseZnfSymbol
 
 bigBedAs = osp.normpath(osp.join(osp.dirname(__file__), "../etc/pseudopipe.as"))
+
+class PpFormat(SymEnum):
+    "input format from pseudopipe"
+    __slots__ = ()
+    hash_tsv = auto()
+    tab_with_id = auto()
 
 def parseArgs():
     usage = """convert pseudopipe output to a BED """
     parser = argparse.ArgumentParser(description=usage)
-    parser.add_argument('ucscDb')
-    parser.add_argument('pseudopipeOut')
-    parser.add_argument('bedOut',
-                        help="both bed and bigBed are created")
+    parser.add_argument('--chromAlias')
+    parser.add_argument('--ncbiGeneDb')
+    parser.add_argument('ppformat', type=PpFormat, choices=PpFormat)
+    parser.add_argument('ucscSpec')
+    parser.add_argument('pseudopipeIn')
+    parser.add_argument('bigBedOut',
+                        help="output bigBed")
     return parser.parse_args()
 
-# chr	start	end	strand	query	frac	ins	del	shift	stop	expect	ident	polya	type
+# in all formats
 nonBedCols = ("frac", "ins", "del", "shift", "stop", "expect", "ident", "polya", "type")
 
 typeRgbColorMap = {
-    "DUP": SvgColors.darkblue,
-    "FRAG": SvgColors.darkorange,
-    "PSSD": SvgColors.darkgreen,
+    "Duplicated": SvgColors.darkblue,
+    "Ambiguous": SvgColors.darkorange,
+    "Processed": SvgColors.darkgreen,
 }
 
 def typeRgbColor(pptype):
     return typeRgbColorMap[pptype].toRgb8Str()
 
-def convertToBed(ppRec):
-    # naive mapping of chromName
-    chrom = "chr" + ppRec.chr
+def convertPpRecToBed(ppRec, symbolLookup):
+    """convert a canonicalized pseudopipe record to a BED tuple.  All
+    named columns should have been normalized first.
+    """
+    symbol = None
+    if symbolLookup is not None:
+        symbol = symbolLookup.proteinAccToSymbol(ppRec.query)
+    if symbol is None:
+        symbol = "unknown"
     score = int(ppRec.ident * 1000)
-    return [chrom, ppRec.start, ppRec.end, ppRec.query, score, ppRec.strand,
-            ppRec.start, ppRec.end, typeRgbColor(ppRec.type)] + [ppRec[c] for c in nonBedCols]
+    return ([ppRec.chr, ppRec.start - 1, ppRec.end, ppRec.query, score, ppRec.strand,
+             ppRec.start, ppRec.end, typeRgbColor(ppRec.type)] +
+            [ppRec[c] for c in nonBedCols] + [symbol])
 
-def convertToBeds(pseudopipeOut):
-    return sorted([convertToBed(ppRec)
-                   for ppRec in TsvReader(pseudopipeOut,
-                                          typeMap={"start": int, "end": int, "ident": float})],
-                  key=lambda p: p[0:3])
+def dropVersion(accv):
+    return accv.split('.')[0]
 
-def writeBeds(beds, bedOut):
-    with open(bedOut, "w") as fh:
+class NcbiGeneSymbolLookup:
+    def __init__(self, ncbiGeneDb):
+        self.conn = sqliteOps.connect(ncbiGeneDb)
+
+    def proteinAccToSymbol(self, accv):
+        "special treatment for ZNFs"
+        acc = dropVersion(accv)
+        sql = "SELECT gi.Symbol, gi.description FROM gene2refseq g2r, gene_info gi WHERE (gi.GeneID = g2r.GeneID) AND (protein_accession = ?);"
+        results = list(sqliteOps.query(self.conn, sql, (acc,)))
+        if len(results) == 0:
+            return None
+        symbol, desc = results[0]
+        znfSymbol = refseqParseZnfSymbol(symbol, desc)
+        return znfSymbol if znfSymbol is not None else symbol
+
+class PpGeneHashTsvReader:
+    # chr	start	end	strand	query	frac	ins	del	shift	stop	expect	ident	polya	type
+
+    def __init__(self, pseudopipeOut, symbolLookup=None):
+        self.reader = TsvReader(pseudopipeOut,
+                                typeMap={"start": int, "end": int, "ident": float,
+                                         "type": lambda t: self.normalizeType[t]})
+        self.symbolLookup = symbolLookup
+
+    # types names are different in different files, this normalizes them
+    normalizeType = {
+        "DUP": "Duplicated",
+        "FRAG": "Ambiguous",
+        "PSSD": "Processed"
+    }
+
+    def __iter__(self):
+        for ppRec in self.reader:
+            yield convertPpRecToBed(ppRec, self.symbolLookup)
+
+
+class TabWithIdReader:
+    colNames = ("id", "chr", "start", "end", "strand", "query", "unknownInt1", "unknownInt2", "geneId",
+                "frac", "ins", "del", "shift", "stop", "expect", "ident", "polya",
+                "unknownBool1", "unknownList1", "unknownList2", "type",
+                "unknownStr1", "unknownStr2")
+
+    typeRgbColorMap = {
+        "DUP": SvgColors.darkblue,
+        "FRAG": SvgColors.darkorange,
+        "PSSD": SvgColors.darkgreen,
+    }
+
+    def __init__(self, pseudopipeOut, symbolLookup=None):
+        self.reader = TsvReader(pseudopipeOut, ignoreExtraCols=True,
+                                columns=self.colNames,
+                                typeMap={"start": int, "end": int, "ident": float})
+        self.symbolLookup = symbolLookup
+
+    def _typeRgbColor(self, pptype):
+        return self.typeRgbColorMap[pptype].toRgb8Str()
+
+    def __iter__(self):
+        for ppRec in self.reader:
+            yield convertPpRecToBed(ppRec, self.symbolLookup)
+
+def convertToBeds(reader):
+    return [ppRec for ppRec in reader]
+
+def writeBeds(beds, bedOut, chromAlias):
+    # sort after name conversion
+    cmds = []
+    if chromAlias is not None:
+        cmds.append(["chromToUcsc", "--chromAlias=" + chromAlias])
+    cmds.append(["sort", "-k1,1", "-k2,2n"])
+
+    with pipettor.Popen(cmds, 'w', stdout=bedOut) as fh:
         for bed in beds:
             fileOps.prRow(fh, bed)
 
-def makeBigBed(ucscDb, bedOut, bbOut):
-    chromSizes = f"/hive/data/genomes/{ucscDb}/chrom.sizes"
-    pipettor.run(["bedToBigBed", "-type=bed9+5", "-as=" + bigBedAs, "-extraIndex=name",
-                  bedOut, chromSizes, bbOut])
+def makeBigBed(ucscSpec, bedFile, bbOut):
+    pipettor.run(["bedToBigBed", "-sizesIs2Bit", "-type=bed9+5", "-as=" + bigBedAs, "-extraIndex=name,symbol",
+                  bedFile, genomeData.getGenomeTwoBit(ucscSpec), bbOut])
+
+def createReader(ppformat, pseudopipeIn, ncbiGeneDb):
+    symbolLookup = None
+    if ncbiGeneDb is not None:
+        symbolLookup = NcbiGeneSymbolLookup(ncbiGeneDb)
+    if ppformat == PpFormat.hash_tsv:
+        reader = PpGeneHashTsvReader(pseudopipeIn, symbolLookup)
+    elif ppformat == PpFormat.tab_with_id:
+        reader = TabWithIdReader(pseudopipeIn, symbolLookup)
+    return reader
+
+def pseudoPipeToBigBed(ppformat, ucscSpec, pseudopipeIn, bigBedOut, chromAlias, ncbiGeneDb):
+    reader = createReader(ppformat, pseudopipeIn, ncbiGeneDb)
+    beds = convertToBeds(reader)
+    tmpBed = fileOps.tmpFileGet(suffix=".tmp")
+    try:
+        writeBeds(beds, tmpBed, chromAlias)
+        makeBigBed(ucscSpec, tmpBed, bigBedOut)
+    finally:
+        fileOps.rmFiles(tmpBed)
 
 def main(opts):
-    bbOut = osp.splitext(opts.bedOut)[1] + ".bb"
-    beds = convertToBeds(opts.pseudopipeOut)
-    writeBeds(beds, opts.bedOut)
-    makeBigBed(opts.ucscDb, opts.bedOut, bbOut)
-
+    pseudoPipeToBigBed(opts.ppformat, opts.ucscSpec, opts.pseudopipeIn, opts.bigBedOut,
+                       opts.chromAlias, opts.ncbiGeneDb)
 
 main(parseArgs())

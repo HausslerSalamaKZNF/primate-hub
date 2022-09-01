@@ -27,6 +27,8 @@ http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_
 ** assembly hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/asm-hub/hub.txt
 ** track hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/track-hub/hub.txt
 
+** test track hub:
+https://hgwdev.gi.ucsc.edu/~markd/kznf/primate-test-hub/2020-10/track-hub/hub.txt
 
 
 * repeat masker and pseudogenes

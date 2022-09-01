@@ -193,3 +193,32 @@ cd ${trackHub}/2020-10/track-hub
 ${primateHub}/hubs/2020-10/build-tools/mkGsuper.bash
 # logs should not have warnings
 ls -l */*.log
+
+* pseudoGenes
+** 2022-08-25 received from Pengyu Ni <pengyu.ni@yale.edu> based on refseq
+based on refseq:
+Callithrix_jacchus_refseq_pgene.correct.txt
+Gorilla_gorilla_refseq_pgene.correct.txt
+Macaca_mulatta_refseq_pgene.correct.txt
+Nomascus_leucogenys_refseq_pgene.correct.txt
+Pan_paniscus_refseq_pgene.correct.txt
+Pan_troglodytes_refseq_pgene.correct.txt
+Pongo_abelii_refseq_pgene.correct.txt
+
+
+# move to 2020-10/track-hub directories
+# build bigBed
+cd ../primate-test-hub/2020-10/track-hub/
+pseudoPipeToBigBed=../../../primate-hub/bin/pseudoPipeToBigBed
+ncbiGeneDb=--ncbiGeneDb=${HOME}/hive/NCBI-SqlLite/full/ncbiGene.db
+${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv panPan3 Bonobo/Pan_paniscus_refseq_pgene.correct.txt Bonobo/pseudoPipeRefSeq.bb
+${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv panTro6 Chimp/Pan_troglodytes_refseq_pgene.correct.txt Chimp/pseudoPipeRefSeq.bb
+${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv GCF_006542625.1 Gibbon/Nomascus_leucogenys_refseq_pgene.correct.txt Gibbon/pseudoPipeRefSeq.bb
+${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv gorGor6 Gorilla/Gorilla_gorilla_refseq_pgene.correct.txt Gorilla/pseudoPipeRefSeq.bb
+${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv calJac4 Marmoset/Callithrix_jacchus_refseq_pgene.correct.txt Marmoset/pseudoPipeRefSeq.bb
+${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv ponAbe3 Orangutan/Pongo_abelii_refseq_pgene.correct.txt Orangutan/pseudoPipeRefSeq.bb
+${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv rheMac10 Rhesus/Macaca_mulatta_refseq_pgene.correct.txt Rhesus/pseudoPipeRefSeq.bb
+
+** Human based on Ensembl.
+Is based on Ensembl90, 2017.  While GENCODE has new pseudogenes,
+having pseudopipe would be useful as it has parents.

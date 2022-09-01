@@ -19,4 +19,5 @@ table pseudopipe
     float   ident;              "ident"
     uint    polya;              "polya"
     string  type;               "type"
+    string  symbol;             "query gene symbol, or 'unknown'"
 )
