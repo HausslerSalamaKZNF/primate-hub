@@ -1,6 +1,6 @@
 track pseudoPipeRefSeq
 html ../html/pseudoPipeRefSeq.html
-type bigBed 9
+type bigBed 9 +
 shortLabel Psedogenes (RefSeq)
 longLabel Pseudopiple Psedogenes derived from RefSeq
 bigDataUrl pseudoPipeRefSeq.bb
