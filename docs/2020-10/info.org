@@ -30,6 +30,20 @@ http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_
 ** test track hub:
 https://hgwdev.gi.ucsc.edu/~markd/kznf/primate-test-hub/2020-10/track-hub/hub.txt
 
+* Ensembl
+| HAL name   | scientific              | accession       | UCSC            | Ensembl |
+|------------+-------------------------+-----------------+-----------------+---------|
+| Human      | Homo sapiens            |                 | hg38            |         |
+| Chimp      | Pan troglodytes         | GCF_002880755.1 | panTro6         |         |
+| Bonobo     | Pan paniscus            | GCF_013052645.1 | panPan3         |         |
+| Gorilla    | Gorilla gorilla gorilla | GCF_008122165.1 | gorGor6         |         |
+| Gibbon     | Nomascus leucogenys     | GCF_006542625.1 | GCF_006542625.1 |         |
+| Orangutan  | Pongo abelii            | GCF_002880775.1 | ponAbe3         |         |
+| Rhesus     | Macaca mulatta          | GCF_003339765.1 | rheMac10        | main    |
+| Marmoset   | Callithrix jacchus      | GCF_009663435.1 | calJac4         |         |
+| Owl_monkey | Aotus ???               |                 | -               |         |
+| Mouse      | Mus musculus            |                 | mm10            |         |
+
 
 * repeat masker and pseudogenes
 | name      | UCSC            | rmsk | ppipe | retro |
