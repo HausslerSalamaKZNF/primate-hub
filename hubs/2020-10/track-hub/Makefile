@@ -73,7 +73,7 @@ ${hub_dir}/%: ${asm_hub_dir}/%
 	@mkdir -p $(dir $@)
 	cp -f $< $@
 
-${dest_trackdb}: ${src_trackdb}
+${dest_trackdb}: ${src_trackdb} ./editTrackDb
 	@mkdir -p $(dir $@)
 	./editTrackDb --out=$@.tmp ${asm_hub_dir}/${asm}/trackDb.txt ${asm}/trackDb.txt
 	mv -f $@.tmp $@

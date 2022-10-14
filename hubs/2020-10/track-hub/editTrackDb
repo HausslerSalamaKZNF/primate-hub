@@ -18,6 +18,7 @@ genomeMap = {
     "Bonobo": "panPan3",
     "Chimp": "panTro6",
     "Gorilla": "gorGor6",
+    "Human": "hg38",
     "Marmoset": "calJac4",
     "Orangutan": "ponAbe3",
     "Rhesus": "rheMac10",
