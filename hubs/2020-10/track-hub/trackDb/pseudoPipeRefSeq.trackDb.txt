@@ -6,7 +6,7 @@ longLabel PseudoPipe Pseudogenes derived from RefSeq
 bigDataUrl pseudoPipeRefSeq.bb
 visibility hide
 searchIndex name,symbol
-itemRdb on
+itemRgb on
 labelFields name,symbol
 defaultLabelFields symbol
 labelSeparator " "
