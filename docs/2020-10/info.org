@@ -33,7 +33,7 @@ https://hgwdev.gi.ucsc.edu/~markd/kznf/primate-test-hub/2020-10/track-hub/hub.tx
 * Ensembl
 | HAL name   | scientific              | accession       | UCSC            | Ensembl |
 |------------+-------------------------+-----------------+-----------------+---------|
-| Human      | Homo sapiens            |                 | hg38            |         |
+| Human      | Homo sapiens            |                 | hg38            | gencode |
 | Chimp      | Pan troglodytes         | GCF_002880755.1 | panTro6         |         |
 | Bonobo     | Pan paniscus            | GCF_013052645.1 | panPan3         |         |
 | Gorilla    | Gorilla gorilla gorilla | GCF_008122165.1 | gorGor6         |         |
