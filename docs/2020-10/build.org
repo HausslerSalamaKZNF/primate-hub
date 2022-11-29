@@ -222,3 +222,8 @@ ${pseudoPipeToBigBed} ${ncbiGeneDb} hash_tsv rheMac10 Rhesus/Macaca_mulatta_refs
 ** Human based on Ensembl.
 Is based on Ensembl90, 2017.  While GENCODE has new pseudogenes,
 having pseudopipe would be useful as it has parents.
+
+* liftoff:
+trackHubBuild/2020-10/liftOff/
+use GENCODE V4
+Makefile

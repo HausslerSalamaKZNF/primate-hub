@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+import sys
+from os import path as osp
+import argparse
+import pipettor
+from collections import defaultdict
+from pycbio.sys import fileOps
+from pycbio.sys.objDict import ObjDict
+# from pycbio.sys.svgcolors import SvgColors
+
+
+sys.path.insert(0, osp.expanduser("~/compbio/kznf/projs/gene-homology/kznf-gene-homology/lib"))
+from kznfhom import genomeData
+
+bigBedAs = osp.normpath(osp.join(osp.dirname(__file__), "../etc/liftoff.as"))
+
+def parseArgs():
+    usage = """convert liftoff output to a bigGenePred """
+    parser = argparse.ArgumentParser(description=usage)
+    parser.add_argument('--keep', action="store_true",
+                        help="keep tmp files")
+    parser.add_argument('ucscSpec')
+    parser.add_argument('liftoffGff3')
+    parser.add_argument('bigBedOut',
+                        help="output bigBed")
+    return parser.parse_args()
+
+def gff3ToGpMeta(liftoffGff3):
+    gpTmpFile = fileOps.tmpFileGet("liftoff.", "tmp.gp")
+    attrsTmpFile = fileOps.tmpFileGet("liftoff.", "tmp.attrs")
+    pipettor.run(["gff3ToGenePred", "-warnAndContinue", "-attrsOut=" + attrsTmpFile,
+                  liftoffGff3, gpTmpFile])
+    return gpTmpFile, attrsTmpFile
+
+def loadAttrsByName(attrsTmpFile):
+    attrsByName = defaultdict(ObjDict)
+    for row in fileOps.iterRows(attrsTmpFile):
+        val = row[2] if len(row) == 3 else row[2:]
+        attrsByName[row[0]][row[1]] = val
+    return attrsByName
+
+def buildBigBed(ucscSpec, bedFile, bbOut):
+    pipettor.run(["bedToBigBed", "-sizesIs2Bit", "-type=bed9+5", "-tab", "-as=" + bigBedAs,
+                  "-extraIndex=name,geneName,geneName2,geneSrcId,transcriptSrcId",
+                  bedFile, genomeData.getGenomeTwoBit(ucscSpec), bbOut])
+
+def dropCopySuffix(id):
+    return id.split('_')[0]
+
+def _attrVal(attrs, name, dflt=""):
+    return attrs.get(name, dflt)
+
+def doBuildBedRow(gpRow, attrsByName):
+    transAttrs = attrsByName[gpRow[3]]
+    geneAttrs = attrsByName[transAttrs.gene_id]
+    tagAttr = transAttrs.get("tag")
+    tags = [] if tagAttr is None else tagAttr.split(",")
+    gpRow[16] = transAttrs.transcript_type  # type
+    gpRow[17] = transAttrs.gene_id     # geneName
+    gpRow[18] = transAttrs.gene_name   # geneName2
+    gpRow[19] = transAttrs.gene_type   # geneType
+    gpRow.extend([
+        len(tags),       # numTags
+        ",".join(tags),  # tags
+        dropCopySuffix(transAttrs.gene_id),        # geneSrcId
+        dropCopySuffix(transAttrs.transcript_id),  # transcriptSrcId
+        geneAttrs.coverage,              # gene_coverage
+        geneAttrs.sequence_ID,           # gene_sequence_ID
+        _attrVal(geneAttrs, "low_identity"),         # gene_low_identity
+        _attrVal(geneAttrs, "partial_mapping"),      # gene_partial_mapping
+        _attrVal(geneAttrs, "extra_copy_number"),    # gene_extra_copy_number
+        _attrVal(geneAttrs, "valid_ORFs", 0),        # gene_valid_ORFs
+        _attrVal(transAttrs, "valid_ORF"),
+        _attrVal(transAttrs, "matches_ref_protein"),
+        _attrVal(transAttrs, "missing_start_codon"),
+        _attrVal(transAttrs, "missing_stop_codon"),
+        _attrVal(transAttrs, "inframe_stop_codon"),
+    ])
+    return gpRow
+
+def buildBedRow(gpRow, attrsByName):
+    try:
+        return doBuildBedRow(gpRow, attrsByName)
+    except Exception as ex:
+        raise Exception("error processing: " + gpRow[3]) from ex
+
+def buildBed(gpTmpFile, attrsByName, tmpBed):
+    bedFh = pipettor.Popen(["sort", "-k1,1", "-k2,2n"], 'w', stdout=tmpBed)
+    try:
+        with pipettor.Popen(["genePredToBigGenePred", gpTmpFile, "/dev/stdout"]) as bgpFh:
+            for gpRow in fileOps.iterRows(bgpFh):
+                fileOps.prRow(bedFh, buildBedRow(gpRow, attrsByName))
+    finally:
+        bedFh.close()
+
+def liftOffToBigBed(ucscSpec, liftoffGff3, bigBedOut, keep):
+    gpTmpFile, attrsTmpFile = gff3ToGpMeta(liftoffGff3)
+    tmpBed = fileOps.tmpFileGet(suffix=".tmp.bed")
+    try:
+        attrsByName = loadAttrsByName(attrsTmpFile)
+        buildBed(gpTmpFile, attrsByName, tmpBed)
+        buildBigBed(ucscSpec, tmpBed, bigBedOut)
+    finally:
+        if keep:
+            print("keeping tmp files:", gpTmpFile, attrsTmpFile, tmpBed, file=sys.stderr)
+        else:
+            fileOps.rmFiles(gpTmpFile, attrsTmpFile, tmpBed)
+
+def main(opts):
+    liftOffToBigBed(opts.ucscSpec, opts.liftoffGff3, opts.bigBedOut, opts.keep)
+
+main(parseArgs())

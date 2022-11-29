@@ -2,11 +2,10 @@ ROOT=..
 include ${ROOT}/defs.mk
 
 .SECONDARY:
-pseudoPipeToBigBed = ../bin/pseudoPipeToBigBed
 
 ncbiGeneDb = ${HOME}/hive/NCBI-SqlLite/full/ncbiGene.db
 
-teat: pseudoPipeTests
+test: pseudoPipeTests liftoffTests
 
 
 pseudoPipeTests: testPpipeHashTsv testPpipeTabId
@@ -19,6 +18,13 @@ testPpipeHashTsv: mkout
 testPpipeTabId: mkout
 	${pseudoPipeToBigBed} --chromAlias=/hive/data/genomes/hg38/bed/chromAlias/hg38.chromAlias.tab tab_with_id hg38 input/Human90.txt output/$@.bb
 	bigBedToBed output/$@.bb output/$@.bed
+	diff expected/$@.bed output/$@.bed
+
+liftoffTests: testLiftoffCnv
+
+testLiftoffCnv: mkout
+	${liftoffToBigBed} panTro6 input/gencodeV41.Chimp.mapped.gff3 output/$@.bb
+	bigBedToBed -header output/$@.bb output/$@.bed
 	diff expected/$@.bed output/$@.bed
 
 mkout:

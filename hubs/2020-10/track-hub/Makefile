@@ -9,24 +9,6 @@ hub_dir = ${hubRootDir}/track-hub
 hub_url = ${hubRootUrl}/track-hub/hub.txt
 asm_hub_dir = ../asm-hub
 
-assemblies = \
-    Rhesus \
-    Marmoset \
-    Orangutan \
-    Gorilla \
-    Chimp \
-    Bonobo \
-    Human \
-    Gibbon
-
-ucsc_asm_Rhesus = rheMac10
-ucsc_asm_Marmoset = calJac4
-ucsc_asm_Gibbon = GCF_006542625.1
-ucsc_asm_Orangutan = ponAbe3
-ucsc_asm_Gorilla = gorGor6
-ucsc_asm_Chimp = panTro6
-ucsc_asm_Bonobo = panPan3
-ucsc_asm_Human = hg38
 
 top_srcs = $(wildcard *.html *.txt html/*.html)
 top_dests = ${top_srcs:%=${hub_dir}/%}
