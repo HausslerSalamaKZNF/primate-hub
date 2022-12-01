@@ -6,7 +6,7 @@ import pipettor
 from collections import defaultdict
 from pycbio.sys import fileOps
 from pycbio.sys.objDict import ObjDict
-# from pycbio.sys.svgcolors import SvgColors
+from pycbio.sys.svgcolors import SvgColors
 
 
 sys.path.insert(0, osp.expanduser("~/compbio/kznf/projs/gene-homology/kznf-gene-homology/lib"))
@@ -40,21 +40,50 @@ def loadAttrsByName(attrsTmpFile):
     return attrsByName
 
 def buildBigBed(ucscSpec, bedFile, bbOut):
-    pipettor.run(["bedToBigBed", "-sizesIs2Bit", "-type=bed9+5", "-tab", "-as=" + bigBedAs,
-                  "-extraIndex=name,geneName,geneName2,geneSrcId,transcriptSrcId",
-                  bedFile, genomeData.getGenomeTwoBit(ucscSpec), bbOut])
+    with fileOps.AtomicFileCreate(bbOut) as bbOutTmp:
+        pipettor.run(["bedToBigBed", "-sizesIs2Bit", "-type=bed9+5", "-tab", "-as=" + bigBedAs,
+                      "-extraIndex=name,geneName,geneName2,geneSrcId,transcriptSrcId",
+                      bedFile, genomeData.getGenomeTwoBit(ucscSpec), bbOutTmp])
 
 def dropCopySuffix(id):
     return id.split('_')[0]
 
+color_coding = SvgColors.navy
+color_nonCoding =  SvgColors.green
+color_pseudo = SvgColors.fuchsia
+color_problem = SvgColors.red
+
 def _attrVal(attrs, name, dflt=""):
     return attrs.get(name, dflt)
+
+def problem_coding(transAttrs):
+    return (bool(_attrVal(transAttrs, "missing_start_codon", False)) or
+            bool(_attrVal(transAttrs, "missing_stop_codon", False)) or
+            bool(_attrVal(transAttrs, "inframe_stop_codon", False)) or
+            (not bool(_attrVal(transAttrs, "valid_ORF", True))))
+
+
+def transColor(geneAttrs, transAttrs):
+    if problem_coding(transAttrs):
+        color = color_problem
+    elif transAttrs.transcript_type == "protein_coding":
+        color = color_coding
+    elif transAttrs.gene_type.find("pseudo") >= 0:
+        color = color_pseudo
+    else:
+        color = color_nonCoding
+
+    if int(_attrVal(geneAttrs, "extra_copy_number", 0)) > 0:
+        # lighten color
+        color = color.setValue(min(1.5 * color.value, 1.0))
+    return color.toRgb8Str()
 
 def doBuildBedRow(gpRow, attrsByName):
     transAttrs = attrsByName[gpRow[3]]
     geneAttrs = attrsByName[transAttrs.gene_id]
     tagAttr = transAttrs.get("tag")
     tags = [] if tagAttr is None else tagAttr.split(",")
+    gpRow[8] = transColor(geneAttrs, transAttrs)
     gpRow[16] = transAttrs.transcript_type  # type
     gpRow[17] = transAttrs.gene_id     # geneName
     gpRow[18] = transAttrs.gene_name   # geneName2
@@ -64,12 +93,12 @@ def doBuildBedRow(gpRow, attrsByName):
         ",".join(tags),  # tags
         dropCopySuffix(transAttrs.gene_id),        # geneSrcId
         dropCopySuffix(transAttrs.transcript_id),  # transcriptSrcId
-        geneAttrs.coverage,              # gene_coverage
-        geneAttrs.sequence_ID,           # gene_sequence_ID
+        _attrVal(geneAttrs, "coverage", "-1"),              # gene_coverage
+        _attrVal(geneAttrs, "sequence_ID", "-1"),           # gene_sequence_ID
         _attrVal(geneAttrs, "low_identity"),         # gene_low_identity
         _attrVal(geneAttrs, "partial_mapping"),      # gene_partial_mapping
-        _attrVal(geneAttrs, "extra_copy_number"),    # gene_extra_copy_number
-        _attrVal(geneAttrs, "valid_ORFs", 0),        # gene_valid_ORFs
+        _attrVal(geneAttrs, "extra_copy_number", "-1"),    # gene_extra_copy_number
+        _attrVal(geneAttrs, "valid_ORFs", "-1"),        # gene_valid_ORFs
         _attrVal(transAttrs, "valid_ORF"),
         _attrVal(transAttrs, "matches_ref_protein"),
         _attrVal(transAttrs, "missing_start_codon"),

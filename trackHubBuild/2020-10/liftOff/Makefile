@@ -2,7 +2,7 @@ ROOT = ../../..
 include ${ROOT}/defs.mk
 include ${ROOT}/hubs/2020-10/defs.mk
 
-liftoff_gencode_srcOrgs = Bonobo Chimp Gibbon Gorilla Marmoset Orangutan Rhesus chm13
+liftoff_gencode_orgs = Bonobo Chimp Gibbon Gorilla Marmoset Orangutan Rhesus chm13
 
 tmpDir = tmp
 humanFa = ${tmpDir}/Human.fa
@@ -11,7 +11,7 @@ gencodeDb = ${tmpDir}/gencodeV41.db
 
 all: doRunLiftoff doBuildTracks
 
-doRunLiftoff: ${liftoff_gencode_srcOrgs:%=%_runLiftoff}
+doRunLiftoff: ${liftoff_gencode_orgs:%=%_runLiftoff}
 
 %_runLiftoff: ${humanFa} ${gencodeDb}
 	${MAKE} runLiftoff org=$*
@@ -45,6 +45,24 @@ ${tmpDir}/%.fa:
 	samtools faidx $@.tmp
 	mv -f $@.tmp.fai $@.fai
 	mv -f $@.tmp $@
+
 # build tracks
 
-doRunLiftoff doBuildTracks
+doBuildTracks: ${liftoff_gencode_orgs:%=%_buildTrack}
+
+%_buildTrack: | doRunLiftoff
+	${MAKE} builtTrack org=$*
+
+liftoffBigBed = gencodeV41.liftoff.bb
+trackDataOrgDir = ../track-hub/${org}
+liftoffMainBigBed =  ../track-hub/${org}/${liftoffBigBed}
+liftoffHubBigBed = ${hubRootDir}/track-hub/${org}/${liftoffBigBed}
+
+
+builtTrack: ${liftoffMainBigBed} ${liftoffHubBigBed}
+
+${liftoffMainBigBed}: ${liftoffGencodeGff}
+	${liftoffToBigBed} ${ucsc_asm_${org}} $< $@
+
+${liftoffHubBigBed}: ${liftoffMainBigBed}
+	ln -f $< $@
