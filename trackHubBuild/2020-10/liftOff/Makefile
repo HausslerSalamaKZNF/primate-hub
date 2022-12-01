@@ -61,8 +61,8 @@ liftoffHubBigBed = ${hubRootDir}/track-hub/${org}/${liftoffBigBed}
 
 builtTrack: ${liftoffMainBigBed} ${liftoffHubBigBed}
 
-${liftoffMainBigBed}: ${liftoffGencodeGff}
-	${liftoffToBigBed} ${ucsc_asm_${org}} $< $@
+${liftoffMainBigBed}: ${liftoffGencodeGff} ${liftoffToBigBed} ${ROOT}/etc/liftoff.as
+	${liftoffToBigBed} ${ucsc_asm_${org}} ${liftoffGencodeGff} $@
 
 ${liftoffHubBigBed}: ${liftoffMainBigBed}
 	ln -f $< $@

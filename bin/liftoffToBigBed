@@ -48,10 +48,11 @@ def buildBigBed(ucscSpec, bedFile, bbOut):
 def dropCopySuffix(id):
     return id.split('_')[0]
 
-color_coding = SvgColors.navy
-color_nonCoding =  SvgColors.green
-color_pseudo = SvgColors.fuchsia
-color_problem = SvgColors.red
+# colors for main and extra mapping
+colors_coding = (SvgColors.navy, SvgColors.cornflowerblue)
+colors_nonCoding =  (SvgColors.green, SvgColors.lawngreen)
+colors_pseudo = (SvgColors.fuchsia, SvgColors.lightpink)
+colors_problem = (SvgColors.darkorange, SvgColors.yellow)
 
 def _attrVal(attrs, name, dflt=""):
     return attrs.get(name, dflt)
@@ -65,17 +66,19 @@ def problem_coding(transAttrs):
 
 def transColor(geneAttrs, transAttrs):
     if problem_coding(transAttrs):
-        color = color_problem
+        colors = colors_problem
     elif transAttrs.transcript_type == "protein_coding":
-        color = color_coding
+        colors = colors_coding
     elif transAttrs.gene_type.find("pseudo") >= 0:
-        color = color_pseudo
+        colors = colors_pseudo
     else:
-        color = color_nonCoding
+        colors = colors_nonCoding
 
-    if int(_attrVal(geneAttrs, "extra_copy_number", 0)) > 0:
-        # lighten color
-        color = color.setValue(min(1.5 * color.value, 1.0))
+    # pick color
+    if int(_attrVal(geneAttrs, "extra_copy_number", 0)) == 0:
+        color = colors[0]
+    else:
+        color = colors[1]
     return color.toRgb8Str()
 
 def doBuildBedRow(gpRow, attrsByName):
@@ -99,6 +102,7 @@ def doBuildBedRow(gpRow, attrsByName):
         _attrVal(geneAttrs, "partial_mapping"),      # gene_partial_mapping
         _attrVal(geneAttrs, "extra_copy_number", "-1"),    # gene_extra_copy_number
         _attrVal(geneAttrs, "valid_ORFs", "-1"),        # gene_valid_ORFs
+        _attrVal(transAttrs, "extra_copy_number", "-1"),
         _attrVal(transAttrs, "valid_ORF"),
         _attrVal(transAttrs, "matches_ref_protein"),
         _attrVal(transAttrs, "missing_start_codon"),

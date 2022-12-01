@@ -1,0 +1,19 @@
+track gencodeV41_liftoff
+html empty.html
+shortLabel gencodeV41 liftoff
+longLabel gencodeV41 liftoff
+description gencodeV41 liftoff
+type bigGenePred
+group cat_tracks
+itemRgb on
+priority 3
+visibility hide
+searchIndex name,geneName,geneName2,geneSrcId,transcriptSrcId
+bigDataUrl gencodeV41.liftoff.bb
+labelFields name,name2,geneName
+defaultLabelFields geneName2
+labelSeperator " / "
+exonNumbers off
+mouseOver gene: $geneName2	transcript: $name	geneId: $geneName	type: $type	$extra_copy_number	valid_ORF: $valid_ORF	matches_ref_protein: $matches_ref_protein	missing_start_codon: $missing_start_codon	missing_stop_codon: $missing_stop_codon	inframe_stop_codon: $inframe_stop_codon
+
+# 0x2028
