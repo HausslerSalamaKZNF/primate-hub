@@ -71,15 +71,16 @@ def readAllTrackDb(trackDbTxts):
     return stanzas
 
 def isSnake(stanza):
-    return re.search('track snake', stanza)
+    return re.search('type halSnake', stanza) and not re.search('superTrack on', stanza)
 
 def getOtherSpecies(stanza):
     return re.search('otherSpecies (.+)\n', stanza).group(1)
 
 def editSnakeStanza(stanza):
     otherSpecies = getOtherSpecies(stanza)
-    if otherSpecies in genomeMap:
-        stanza = stanza.replace('otherSpecies ' + otherSpecies, 'otherSpecies ' + genomeMap[otherSpecies])
+    if not otherSpecies in genomeMap:
+        return ""
+    stanza = stanza.replace('otherSpecies ' + otherSpecies, 'otherSpecies ' + genomeMap[otherSpecies])
     stanza = stanza.replace('../primates_eichler-v2.hal', '../primates_eichler-v2-ucsc.hal')
     return stanza
 
