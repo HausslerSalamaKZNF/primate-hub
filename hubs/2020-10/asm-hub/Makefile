@@ -28,7 +28,7 @@ assemblies = \
     Bonobo \
     Human
 
-srcs = $(wildcard *.html *.txt) $(foreach a,${assemblies},$(wildcard $a/*.txt $a/*.html $a/*/*.txt $a/*/*.html))
+srcs = $(wildcard *.html *.txt) $(foreach a,${assemblies},$(wildcard $a/*.txt $a/*.html $a/*/*.txt $a/*/*.html)) $(wildcard trackDb/*.txt)
 
 all: hub
 
