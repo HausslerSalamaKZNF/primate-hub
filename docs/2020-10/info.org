@@ -45,14 +45,16 @@ https://hgwdev.gi.ucsc.edu/~markd/kznf/primate-test-hub/2020-10/track-hub/hub.tx
 | Mouse      | Mus musculus            |                 | mm10            |         |
 
 
-* repeat masker and pseudogenes
-| name      | UCSC            | rmsk | ppipe | retro |
-|-----------+-----------------+------+-------+-------|
-| Human     | hg38            |      |       |       |
-| Chimp     | panTro6         |      |   Y   |       |
-| Bonobo    | panPan3         |      |   Y   |       |
-| Gorilla   | gorGor6         |      |   Y   |       |
-| Orangutan | ponAbe3         |      |   Y   |       |
-| Gibbon    | GCF_006542625.1 |      |   N   |       |
-| Rhesus    | rheMac10        |      |   Y   |       |
-| Marmoset  | calJac4         |      |   Y   |       |
+* Ensemble rapid
+| HAL name   | scientific              | accession       | Ensembl/Rapid   |
+|------------+-------------------------+-----------------+-----------------|
+| Human      | Homo sapiens            |                 | GENCODE         |
+| Chimp      | Pan troglodytes         | GCF_002880755.1 |                 |
+| Bonobo     | Pan paniscus            | GCF_013052645.1 |                 |
+| Gorilla    | Gorilla gorilla gorilla | GCF_008122165.1 |                 |
+| Gibbon     | Nomascus leucogenys     | GCF_006542625.1 | GCA_006542625.1 |
+| Orangutan  | Pongo abelii            | GCF_002880775.1 | GCA_002880775.3 |
+| Rhesus     | Macaca mulatta          | GCF_003339765.1 | main            |
+| Marmoset   | Callithrix jacchus      | GCF_009663435.1 | GCA_011100555.1 |
+| Owl_monkey | Aotus ???               |                 |                 |
+| Mouse      | Mus musculus            |                 |                 |
