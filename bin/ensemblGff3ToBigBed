@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+import sys
+from os import path as osp
+import argparse
+import dataclasses
+import pipettor
+from collections import defaultdict
+from pycbio.sys import fileOps
+from pycbio.sys.objDict import ObjDict
+
+bigEnsemblAs = osp.normpath(osp.join(osp.dirname(__file__), "../etc/bigEnsembl.as"))
+bigEnsemblHprcAs = osp.normpath(osp.join(osp.dirname(__file__), "../etc/bigEnsemblHprc.as"))
+
+# colors for main and extra mapping
+color_coding = "0,0,128"  # navy
+color_noncoding = "0,128,0"  # green
+color_pseudo = "255,0,255"  # fuchsia
+color_other = "255,140,0"   # darkorange
+
+protein_coding_biotypes = frozenset([
+    "IG_C_gene", "IG_D_gene", "IG_J_gene", "IG_V_gene", "TR_C_gene",
+    "TR_D_gene", "TR_J_gene", "TR_V_gene", "protein_coding",
+    "nonsense_mediated_decay"])
+
+
+def parseArgs():
+    usage = """convert Ensembl GFF3 to bigEnsembl bigBed """
+    parser = argparse.ArgumentParser(description=usage)
+    parser.add_argument('--hprc', action="store_true",
+                        help="input is from Ensembl HPRC mapping")
+    parser.add_argument('--keep', action="store_true",
+                        help="keep tmp files")
+    parser.add_argument('ensemblGff3')
+    parser.add_argument('genomeTwoBit')
+    parser.add_argument('bigBedOut',
+                        help="output bigBed")
+    return parser.parse_args()
+
+@dataclasses.dataclass
+class BigEnsembl:
+    """Matches bigEnsembl.as, with non-bigGenePred fields defaulted.  No type conversions
+    are done"""
+    chrom: str
+    chromStart: str
+    chromEnd: str
+    name: str
+    score: str
+    strand: str
+    thickStart: str
+    thickEnd: str
+    reserved: str
+    blockCount: str
+    blockSizes: str
+    chromStarts: str
+    name2: str
+    cdsStartStat: str
+    cdsEndStat: str
+    exonFrames: str
+    type: str
+    geneName: str
+    geneName2: str
+    geneType: str
+    description: str = ""
+    numTags: str = "0"
+    tags: str = ""
+
+@dataclasses.dataclass
+class BigEnsemblHprc(BigEnsembl):
+    """Matches bigEnsembl.as, with non-bigGenePred fields defaulted.  No type conversions
+    are done"""
+    parentGene: str = ""
+    parentTranscript: str = ""
+    annotationMethod: str = ""
+    cdsCoverage: str = "0.0"
+    cdsGap: str = "0"
+    cdsIdentity: str = "0.0"
+    mappingCoverage: str = "0.0"
+    mappingIdentity: str = "0.0"
+
+def getRecClass(hprc):
+    return BigEnsemblHprc if hprc else BigEnsembl
+
+def gff3ToGpMeta(ensemblGff3):
+    "convert to bigGenePrep text format  and tab-file of attributes"
+    gpTmpFile = fileOps.tmpFileGet("ensembl.", "tmp.gp")
+    attrsTmpFile = fileOps.tmpFileGet("ensembl.", "tmp.attrs")
+    pipettor.run([["gff3ToGenePred", "-warnAndContinue", "-rnaNameAttr=transcript_id",
+                   "-attrsOut=" + attrsTmpFile, ensemblGff3, "/dev/stdin"],
+                  ["genePredToBigGenePred", "/dev/stdin", gpTmpFile]])
+    return gpTmpFile, attrsTmpFile
+
+def parseAttr(row, geneAttrsTbl, transAttrsTbl):
+    # gene:ENSG05505034092
+    # transcript:ENST05505131716
+    feat, ident = row.split(':')
+    attrsTbl = geneAttrsTbl if feat == "gene" else transAttrsTbl
+    attrsTbl[ident][row[1]] = row[2] if len(row) == 3 else row[2:]
+
+def loadAttrs(attrsTmpFile):
+    "load gene and transcript attributes by id"
+    geneAttrsTbl = defaultdict(ObjDict)
+    transAttrsTbl = defaultdict(ObjDict)
+    for row in fileOps.iterRows(attrsTmpFile):
+        parseAttr(row, geneAttrsTbl, transAttrsTbl)
+    return geneAttrsTbl, transAttrsTbl
+
+def buildBigBed(bedFile, genomeTwoBit, bbOut, hprc):
+    asFile = bigEnsemblHprcAs if hprc else bigEnsemblAs
+    numCols = len(dataclasses.fields(getRecClass(hprc)))
+    bedType = "bed12+{}".format(numCols - 12)
+
+    pipettor.run(["bedToBigBed", "-sizesIs2Bit", "-type=" + bedType, "-tab",
+                  "-as=" + asFile,
+                  "-extraIndex=name,geneName,geneName2",
+                  bedFile, genomeTwoBit, bbOut])
+
+def transColor(geneAttrs, transAttrs):
+    if transAttrs.biotype in protein_coding_biotypes:
+        return color_coding
+    elif transAttrs.gene_type.find("pseudo") >= 0:
+        return color_pseudo
+    elif transAttrs.gene_type.find("lncRNA") >= 0:
+        return color_noncoding
+    else:
+        return color_other
+
+def mkTags(transAttrs):
+    tagAttr = transAttrs.get("tag")
+    return [] if tagAttr is None else tagAttr.split(",")
+
+def doBuildBedRow(row, geneAttrsTbl, transAttrsTbl, hprc):
+    gp = getRecClass(hprc)(*row)
+    transAttrs = transAttrsTbl[gp.name]
+    geneAttrs = geneAttrsTbl[transAttrs.gene_id]
+
+    gp.name = transAttrs.transcript_id + '.' + transAttrs.version
+    gp.reserved = transColor(geneAttrs, transAttrs)
+    gp.type = transAttrs.biotype
+    gp.geneName = transAttrs.gene_id
+    gp.geneName2 = transAttrs.gene_name
+    gp.geneType = geneAttrs.biotype
+    gp.description = geneAttrs.description
+    tags = mkTags(transAttrs)
+    gp.numtags = str(len(tags))
+    if hprc:
+        gp.parentGene = geneAttrs.parent_gene
+        gp.parentTranscript = transAttrs.parent_transcript
+        gp.annotationMethod = transAttrs.annotation_method
+        gp.cdsCoverage = transAttrs.cds_coverage
+        gp.cdsGap = transAttrs.cds_gap
+        gp.cdsIdentity = transAttrs.cds_identity
+        gp.mappingCoverage = transAttrs.mapping_coverage
+        gp.mappingIdentity = transAttrs.mapping_identity
+    return gp
+
+def buildBedRow(row, geneAttrsTbl, transAttrsTbl, hprc):
+    try:
+        return doBuildBedRow(row, geneAttrsTbl, transAttrsTbl, hprc)
+    except Exception as ex:
+        raise Exception("error processing: " + row[3]) from ex
+
+def buildBed(gpTmpFile, geneAttrsTbl, transAttrsTbl, tmpBed, hprc):
+    sys.environ["LC_NUMERIC"] = sys.environ["LC_COLLATE"] = "C"
+
+    bedFh = pipettor.Popen(["sort", "-k1,1", "-k2,2n"], 'w', stdout=tmpBed)
+    try:
+        with pipettor.Popen(["genePredToBigGenePred", gpTmpFile, "/dev/stdout"]) as bgpFh:
+            for row in fileOps.iterRows(bgpFh):
+                bedRec = buildBedRow(row, geneAttrsTbl, transAttrsTbl, hprc)
+                fileOps.prRow(bedFh, dataclasses.astuple(bedRec))
+    finally:
+        bedFh.close()
+
+def ensemblToBigBed(ensemblGff3, genomeTwoBit, bigBedOut, hprc, keep):
+    gpTmpFile, attrsTmpFile = gff3ToGpMeta(ensemblGff3)
+    tmpBed = fileOps.tmpFileGet(suffix=".tmp.bed")
+    try:
+        geneAttrsTbl, transAttrsTbl = loadAttrs(attrsTmpFile)
+        buildBed(gpTmpFile, geneAttrsTbl, transAttrsTbl, tmpBed, hprc)
+        buildBigBed(tmpBed, genomeTwoBit, bigBedOut, hprc)
+    finally:
+        if keep:
+            print("keeping tmp files:", gpTmpFile, attrsTmpFile, tmpBed, file=sys.stderr)
+        else:
+            fileOps.rmFiles(gpTmpFile, attrsTmpFile, tmpBed)
+
+def main(opts):
+    ensemblToBigBed(opts.ensemblGff3, opts.genomeTwoBit, opts.bigBedOut,
+                    opts.hprc, opts.keep)
+
+main(parseArgs())

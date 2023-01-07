@@ -50,7 +50,7 @@ def dropCopySuffix(id):
 
 # colors for main and extra mapping
 colors_coding = (SvgColors.navy, SvgColors.cornflowerblue)
-colors_nonCoding =  (SvgColors.green, SvgColors.lawngreen)
+colors_nonCoding = (SvgColors.green, SvgColors.lawngreen)
 colors_pseudo = (SvgColors.fuchsia, SvgColors.lightpink)
 colors_problem = (SvgColors.darkorange, SvgColors.yellow)
 
