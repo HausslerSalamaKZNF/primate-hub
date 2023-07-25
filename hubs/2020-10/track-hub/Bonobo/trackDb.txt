@@ -1,3 +1,1 @@
-include ../trackDb/GenomicSuperDup.trackDb.txt
-include ../trackDb/pseudoPipeRefSeq.trackDb.txt
-include ../trackDb/liftoff.trackDb.txt
+pseudoPipe.trackDb.txt

@@ -160,7 +160,7 @@ def buildBedRow(row, geneAttrsTbl, transAttrsTbl, hprc):
         raise Exception("error processing: " + row[3]) from ex
 
 def buildBed(gpTmpFile, geneAttrsTbl, transAttrsTbl, tmpBed, hprc):
-    sys.environ["LC_NUMERIC"] = sys.environ["LC_COLLATE"] = "C"
+    os.environ["LC_NUMERIC"] = os.environ["LC_COLLATE"] = "C"
 
     bedFh = pipettor.Popen(["sort", "-k1,1", "-k2,2n"], 'w', stdout=tmpBed)
     try:

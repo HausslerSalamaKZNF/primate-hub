@@ -25,7 +25,8 @@ class PpFormat(SymEnum):
 def parseArgs():
     usage = """convert pseudopipe output to a BED """
     parser = argparse.ArgumentParser(description=usage)
-    parser.add_argument('--chromAlias')
+    parser.add_argument('--chromAlias',
+                        help="can be tab-format chrom alias file")
     parser.add_argument('--ncbiGeneDb')
     parser.add_argument('ppformat', type=PpFormat, choices=PpFormat)
     parser.add_argument('ucscSpec')
