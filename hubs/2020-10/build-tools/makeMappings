@@ -1,0 +1,17 @@
+#!/bin/bash -ex
+
+function mkMapping() {
+    join -t $'\t' \
+        $1/$1.idKeys.txt \
+        /hive/data/genomes/$2/bed/idKeys/$2.idKeys.txt | tawk '{print $2,$3}'  > mappings/$1.mapping
+}
+
+mkdir -p mappings
+
+
+mkMapping Bonobo panPan3
+mkMapping Chimp panTro6
+mkMapping Gorilla gorGor6
+mkMapping Marmoset calJac4
+mkMapping Orangutan ponAbe3
+mkMapping Rhesus rheMac10

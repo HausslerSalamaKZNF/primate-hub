@@ -1,5 +1,7 @@
 
 .SECONDARY:
+SHELL = /bin/bash -e
+export SHELLOPTS=pipefail
 
 hostname = $(shell hostname)
 
@@ -24,15 +26,17 @@ pub_track_hub_dir = ${pub_hub_dir}/track-hub
 
 udcDir = ${TMPDIR}/markd/udcCache
 
-assemblies = \
+annot_assemblies = \
     Rhesus \
     Marmoset \
     Orangutan \
     Gorilla \
     Chimp \
     Bonobo \
-    Human \
     Gibbon
+
+assemblies = ${annot_assemblies} \
+    Human
 
 ucsc_asm_Rhesus = rheMac10
 ucsc_asm_Marmoset = calJac4

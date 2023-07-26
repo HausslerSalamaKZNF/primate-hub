@@ -24,7 +24,9 @@ mkdir $(cat ../genomes/genomes.lst )
 for g in $(cat ../genomes/genomes.lst) ; do (~/kent/src/hg/utils/automation/doIdKeys.pl -buildDir=$(pwd)/$g -twoBit=$(pwd)/../genomes/$g.2bit $g&) ; done
 
 # compare pairs of hubname browsername, need 3rd col
-    join -t $'\t' \
+#  this is now in 2020-10/build-tools/makeMappings
+
+join -t $'\t' \
         mkkeys/$1/$1.idKeys.txt \
         /hive/data/genomes/$2/bed/idKeys/$2.idKeys.txt | tawk '{print $2,$3}'  >mappings/$1.mapping
 
