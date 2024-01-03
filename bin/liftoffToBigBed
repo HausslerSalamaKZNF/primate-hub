@@ -10,7 +10,7 @@ from pycbio.sys.svgcolors import SvgColors
 
 
 sys.path.insert(0, osp.expanduser("~/compbio/kznf/projs/gene-homology/kznf-gene-homology/lib"))
-from kznfhom import genomeData
+from primatehub import genomeData
 
 bigBedAs = osp.normpath(osp.join(osp.dirname(__file__), "../etc/liftoff.as"))
 

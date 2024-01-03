@@ -9,10 +9,9 @@ from pycbio.sys.svgcolors import SvgColors
 from pycbio.tsv import TsvReader
 from pycbio.db import sqliteOps
 
-
-sys.path.insert(0, osp.expanduser("~/compbio/kznf/projs/gene-homology/kznf-gene-homology/lib"))
-from kznfhom import genomeData
-from kznfhom.refseq import refseqParseZnfSymbol
+sys.path.insert(0, osp.normpath(osp.join(osp.dirname(__file__), "../lib")))
+from primatehub import genomeData
+from primatehub.refseq import refseqParseZnfSymbol
 
 bigBedAs = osp.normpath(osp.join(osp.dirname(__file__), "../etc/pseudopipe.as"))
 
