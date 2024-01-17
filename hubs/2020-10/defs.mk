@@ -13,9 +13,9 @@ ifeq (${hostname},hgwdev)
 else
    # linked locations:
    # /public/groups/cgl/cat/primates_jason/REDO/cat/gencode_v33/out/assemblyHub
-   # http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
+   # http://public.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
    hubRootDir = /public/home/markd/public_html/primates-hubs/${buildDate}
-   hubRootUrl = http://cgl.gi.ucsc.edu/~markd/primates-hubs/${buildDate}
+   hubRootUrl = http://public.gi.ucsc.edu/~markd/primates-hubs/${buildDate}
 endif
 
 pub_hub_host = courtyard

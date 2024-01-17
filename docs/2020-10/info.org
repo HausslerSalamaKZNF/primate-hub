@@ -22,10 +22,10 @@ type: GB = GenBank, RS = RefSeq, UN = unsubmitted
 * Hub:
 ** old hub location
 ~jcarmstr/public_html/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/
-http://courtyard.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
+http://public.gi.ucsc.edu/~jcarmstr/cat_data/primates_jason/REDO/cat/gencode_v33/out/assemblyHub/hub.txt
 
-** assembly hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/asm-hub/hub.txt
-** track hub: https://courtyard.gi.ucsc.edu/~markd/kznf/hubs/2020-10/track-hub/hub.txt
+** assembly hub: https://public.gi.ucsc.edu/~markd/kznf/hubs/2020-10/asm-hub/hub.txt
+** track hub: https://public.gi.ucsc.edu/~markd/kznf/hubs/2020-10/track-hub/hub.txt
 
 ** test track hub:
 https://hgwdev.gi.ucsc.edu/~markd/kznf/primate-test-hub/2020-10/track-hub/hub.txt
